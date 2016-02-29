@@ -1,4 +1,4 @@
-package nju.software.modifier.rewrite;
+package nju.software.rewrite;
 
 import java.io.BufferedReader;
 import java.io.File;

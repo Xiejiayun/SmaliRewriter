@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="D:/sdk/platforms/android-23/android.jar"/>
 	<classpathentry kind="output" path="out/production/SmaliRewriter"/>
 </classpath>

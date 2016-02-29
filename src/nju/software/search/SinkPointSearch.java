@@ -1,4 +1,4 @@
-package nju.software.modifier.search;
+package nju.software.search;
 
 import java.io.BufferedReader;
 import java.io.File;

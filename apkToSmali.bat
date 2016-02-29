@@ -1,6 +1,6 @@
 D:
-cd D:\androidAPK\apktool 
-apktool d D:\androidAPK\auto-apk-test\SendSMS.apk D:\androidAPK\auto-apk-test\SendSMSAutoDapk
+cd D:\androidAPK\apktool
+apktool d D:\androidAPK\SendSMS.apk -o D:\androidAPK\SendSMSAutoDapk
 Pause
 EXIT
 

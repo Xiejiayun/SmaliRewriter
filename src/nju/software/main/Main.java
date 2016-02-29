@@ -3,8 +3,8 @@ package nju.software.main;
 import java.io.IOException;
 import java.util.List;
 
-import nju.software.modifier.rewrite.SmaliRewriter;
-import nju.software.modifier.search.SinkPointSearch;
+import nju.software.rewrite.SmaliRewriter;
+import nju.software.search.SinkPointSearch;
 import nju.software.parser.SmaliParser;
 import nju.software.repackage.SmaliRepackage;
 
@@ -33,7 +33,7 @@ public class Main {
 		SmaliRewriter smaliRewriter = new SmaliRewriter();
 		try {
 			smaliRewriter.readSmalis(
-					"D://androidAPK//auto-apk-test//SendSMSAutoDapk",
+					"D://androidAPK//SendSMSAutoDapk",
 					"CheckMessage.smali", messageList);
 		} catch (Exception e) {
 			e.printStackTrace();
