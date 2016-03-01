@@ -20,13 +20,11 @@ public class SmaliRepackage {
 
 			InputStream fis = process.getInputStream();
 			InputStreamReader isr = new InputStreamReader(fis);
-
 			BufferedReader br = new BufferedReader(isr);
-
-			while ((br.readLine()) != null) {
-				// System.out.println("******");
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
 			}
-			
 			System.out.println("finish repackaging");
 		} catch (IOException e) {
 			System.out.println("执行SmaliToApk.bat文件出错！");

@@ -3,9 +3,10 @@ package nju.software.main;
 import java.io.IOException;
 import java.util.List;
 
+import nju.software.constants.Constants;
+import nju.software.decompile.Decompiler;
 import nju.software.rewrite.SmaliRewriter;
 import nju.software.search.SinkPointSearch;
-import nju.software.parser.SmaliParser;
 import nju.software.repackage.SmaliRepackage;
 
 public class Main {
@@ -21,7 +22,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		SmaliParser.parser("apkToSmali.bat");
+		Decompiler.decompile(Constants.apkToSmali);
 
 		try {
 			messageList = SinkPointSearch
@@ -39,7 +40,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		SmaliRepackage.repackage("SmaliToApk.bat");
+		SmaliRepackage.repackage(Constants.smaliToApk);
 	}
 
 }
