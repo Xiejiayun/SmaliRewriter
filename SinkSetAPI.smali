@@ -1,4 +1,4 @@
-.class public Lcom/example/messagesmali/SinkSetAPI;
+.class public Lnju/software/api/SinkSetAPI;
 .super Landroid/app/Activity;
 .source "SinkSetAPI.java"
 
@@ -26,27 +26,27 @@
     .end annotation
 
     .prologue
-    .line 202
+    .line 196
     new-instance v0, Lorg/apache/http/client/methods/HttpGet;
 
     const-string v3, ""
 
     invoke-direct {v0, v3}, Lorg/apache/http/client/methods/HttpGet;-><init>(Ljava/lang/String;)V
 
-    .line 203
-    .local v0, getMethodGet:Lorg/apache/http/client/methods/HttpGet;
+    .line 197
+    .local v0, "getMethodGet":Lorg/apache/http/client/methods/HttpGet;
     new-instance v1, Lorg/apache/http/impl/client/DefaultHttpClient;
 
     invoke-direct {v1}, Lorg/apache/http/impl/client/DefaultHttpClient;-><init>()V
 
-    .line 205
-    .local v1, httpClient:Lorg/apache/http/client/HttpClient;
+    .line 199
+    .local v1, "httpClient":Lorg/apache/http/client/HttpClient;
     invoke-interface {v1, v0}, Lorg/apache/http/client/HttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;
 
     move-result-object v2
 
-    .line 207
-    .local v2, response:Lorg/apache/http/HttpResponse;
+    .line 201
+    .local v2, "response":Lorg/apache/http/HttpResponse;
     return-void
 .end method
 
@@ -54,11 +54,11 @@
     .locals 8
 
     .prologue
-    const/4 v7, 0x2
+    const/4 v7, 0x1
 
-    const/4 v6, 0x1
+    const/4 v6, 0x0
 
-    const/4 v5, 0x0
+    const/4 v5, 0x2
 
     const/4 v4, 0x3
 
@@ -68,17 +68,17 @@
     invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
 
     .line 53
-    .local v0, bundle:Landroid/os/Bundle;
+    .local v0, "bundle":Landroid/os/Bundle;
     const-string v1, "isSink"
 
-    invoke-virtual {v0, v1, v6}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
+    invoke-virtual {v0, v1, v7}, Landroid/os/Bundle;->putBoolean(Ljava/lang/String;Z)V
 
     .line 54
     const-string v1, "isSinks"
 
     new-array v2, v4, [Z
 
-    aput-boolean v6, v2, v5
+    fill-array-data v2, :array_0
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putBooleanArray(Ljava/lang/String;[Z)V
 
@@ -112,7 +112,7 @@
 
     new-array v2, v4, [C
 
-    fill-array-data v2, :array_0
+    fill-array-data v2, :array_1
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putCharArray(Ljava/lang/String;[C)V
 
@@ -126,35 +126,31 @@
     .line 60
     const-string v1, "sinkCharQs"
 
-    new-array v2, v7, [Ljava/lang/String;
+    new-array v2, v5, [Ljava/lang/String;
 
     const-string v3, "charQ1"
 
-    aput-object v3, v2, v5
-
-    .line 61
-    const-string v3, "charQ2"
-
     aput-object v3, v2, v6
 
-    .line 60
+    const-string v3, "charQ2"
+
+    aput-object v3, v2, v7
+
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putCharSequenceArray(Ljava/lang/String;[Ljava/lang/CharSequence;)V
 
     .line 62
     const-string v1, "sinkCharQst"
 
-    .line 63
     new-instance v2, Ljava/util/ArrayList;
 
     invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
 
-    .line 62
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putCharSequenceArrayList(Ljava/lang/String;Ljava/util/ArrayList;)V
 
     .line 64
     const-string v1, "sinkDouble"
 
-    const-wide v2, 0x401aa3d70a3d70a4L
+    const-wide v2, 0x401aa3d70a3d70a4L    # 6.66
 
     invoke-virtual {v0, v1, v2, v3}, Landroid/os/Bundle;->putDouble(Ljava/lang/String;D)V
 
@@ -163,23 +159,23 @@
 
     new-array v2, v4, [D
 
-    fill-array-data v2, :array_1
+    fill-array-data v2, :array_2
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putDoubleArray(Ljava/lang/String;[D)V
 
     .line 66
     const-string v1, "sinkFloat"
 
-    const v2, 0x40d51eb8
+    const v2, 0x40d51eb8    # 6.66f
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putFloat(Ljava/lang/String;F)V
 
     .line 67
     const-string v1, "sinkFloats"
 
-    new-array v2, v7, [F
+    new-array v2, v5, [F
 
-    fill-array-data v2, :array_2
+    fill-array-data v2, :array_3
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putFloatArray(Ljava/lang/String;[F)V
 
@@ -195,7 +191,7 @@
 
     new-array v2, v4, [I
 
-    fill-array-data v2, :array_3
+    fill-array-data v2, :array_4
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putIntArray(Ljava/lang/String;[I)V
 
@@ -220,69 +216,65 @@
 
     new-array v2, v4, [J
 
-    fill-array-data v2, :array_4
+    fill-array-data v2, :array_5
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putLongArray(Ljava/lang/String;[J)V
 
     .line 74
     const-string v1, "sinkParcel"
 
-    new-instance v2, Lcom/example/messagesmali/PersonParcelable;
+    new-instance v2, Lnju/software/api/PersonParcelable;
 
-    invoke-direct {v2}, Lcom/example/messagesmali/PersonParcelable;-><init>()V
+    invoke-direct {v2}, Lnju/software/api/PersonParcelable;-><init>()V
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putParcelable(Ljava/lang/String;Landroid/os/Parcelable;)V
 
     .line 75
     const-string v1, "sinkParcels"
 
-    new-array v2, v5, [Lcom/example/messagesmali/PersonParcelable;
+    new-array v2, v6, [Lnju/software/api/PersonParcelable;
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putParcelableArray(Ljava/lang/String;[Landroid/os/Parcelable;)V
 
     .line 76
     const-string v1, "sinkParcelList"
 
-    .line 77
     new-instance v2, Ljava/util/ArrayList;
 
     invoke-direct {v2}, Ljava/util/ArrayList;-><init>()V
 
-    .line 76
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putParcelableArrayList(Ljava/lang/String;Ljava/util/ArrayList;)V
 
     .line 78
     const-string v1, "sinkSerial"
 
-    new-instance v2, Lcom/example/messagesmali/PersonSerilization;
+    new-instance v2, Lnju/software/api/PersonSerilization;
 
-    invoke-direct {v2}, Lcom/example/messagesmali/PersonSerilization;-><init>()V
+    invoke-direct {v2}, Lnju/software/api/PersonSerilization;-><init>()V
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putSerializable(Ljava/lang/String;Ljava/io/Serializable;)V
 
     .line 79
     const-string v1, "sinkShort"
 
-    invoke-virtual {v0, v1, v7}, Landroid/os/Bundle;->putShort(Ljava/lang/String;S)V
+    invoke-virtual {v0, v1, v5}, Landroid/os/Bundle;->putShort(Ljava/lang/String;S)V
 
     .line 80
     const-string v1, "sinkShorts"
 
     new-array v2, v4, [S
 
-    fill-array-data v2, :array_5
+    fill-array-data v2, :array_6
 
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putShortArray(Ljava/lang/String;[S)V
 
     .line 81
     const-string v1, "sinkSparse"
 
-    .line 82
     new-instance v2, Landroid/util/SparseArray;
 
     invoke-direct {v2}, Landroid/util/SparseArray;-><init>()V
 
-    .line 81
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putSparseParcelableArray(Ljava/lang/String;Landroid/util/SparseArray;)V
 
     .line 83
@@ -295,18 +287,16 @@
     .line 84
     const-string v1, "sinkStrings"
 
-    new-array v2, v7, [Ljava/lang/String;
+    new-array v2, v5, [Ljava/lang/String;
 
     const-string v3, "string1"
 
-    aput-object v3, v2, v5
-
-    .line 85
-    const-string v3, "string2"
-
     aput-object v3, v2, v6
 
-    .line 84
+    const-string v3, "string2"
+
+    aput-object v3, v2, v7
+
     invoke-virtual {v0, v1, v2}, Landroid/os/Bundle;->putStringArray(Ljava/lang/String;[Ljava/lang/String;)V
 
     .line 86
@@ -337,55 +327,61 @@
     .line 89
     return-void
 
-    .line 58
-    nop
-
+    .line 54
     :array_0
-    .array-data 0x2
-        0x6dt 0x0t
-        0x6dt 0x0t
-        0x6at 0x0t
+    .array-data 1
+        0x1t
+        0x0t
+        0x0t
+    .end array-data
+
+    .line 58
+    :array_1
+    .array-data 2
+        0x6ds
+        0x6ds
+        0x6as
     .end array-data
 
     .line 65
     nop
 
-    :array_1
-    .array-data 0x8
-        0xa4t 0x70t 0x3dt 0xat 0xd7t 0xa3t 0x1at 0x40t
-        0x14t 0xaet 0x47t 0xe1t 0x7at 0x14t 0x1ft 0x40t
-        0xc3t 0xf5t 0x28t 0x5ct 0x8ft 0xc2t 0x21t 0x40t
+    :array_2
+    .array-data 8
+        0x401aa3d70a3d70a4L    # 6.66
+        0x401f147ae147ae14L    # 7.77
+        0x4021c28f5c28f5c3L    # 8.88
     .end array-data
 
     .line 67
-    :array_2
-    .array-data 0x4
-        0xb8t 0x1et 0xd5t 0x40t
-        0x7bt 0x14t 0xet 0x41t
+    :array_3
+    .array-data 4
+        0x40d51eb8    # 6.66f
+        0x410e147b    # 8.88f
     .end array-data
 
     .line 70
-    :array_3
-    .array-data 0x4
-        0x1t 0x0t 0x0t 0x0t
-        0x2t 0x0t 0x0t 0x0t
-        0x3t 0x0t 0x0t 0x0t
+    :array_4
+    .array-data 4
+        0x1
+        0x2
+        0x3
     .end array-data
 
     .line 73
-    :array_4
-    .array-data 0x8
-        0xct 0x0t 0x0t 0x0t 0x0t 0x0t 0x0t 0x0t
-        0xdt 0x0t 0x0t 0x0t 0x0t 0x0t 0x0t 0x0t
-        0xet 0x0t 0x0t 0x0t 0x0t 0x0t 0x0t 0x0t
+    :array_5
+    .array-data 8
+        0xc
+        0xd
+        0xe
     .end array-data
 
     .line 80
-    :array_5
-    .array-data 0x2
-        0x1t 0x0t
-        0x2t 0x0t
-        0x3t 0x0t
+    :array_6
+    .array-data 2
+        0x1s
+        0x2s
+        0x3s
     .end array-data
 .end method
 
@@ -395,21 +391,21 @@
     .prologue
     const/4 v3, 0x0
 
-    .line 211
+    .line 205
     new-instance v6, Landroid/content/ContentValues;
 
     invoke-direct {v6}, Landroid/content/ContentValues;-><init>()V
 
-    .line 212
-    .local v6, ct:Landroid/content/ContentValues;
+    .line 206
+    .local v6, "ct":Landroid/content/ContentValues;
     const-string v0, "sink1"
 
     const-string v1, "content"
 
     invoke-virtual {v6, v0, v1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 213
-    invoke-virtual {p0}, Lcom/example/messagesmali/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
+    .line 207
+    invoke-virtual {p0}, Lnju/software/api/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v0
 
@@ -417,8 +413,8 @@
 
     invoke-virtual {v0, v1, v6}, Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
 
-    .line 215
-    invoke-virtual {p0}, Lcom/example/messagesmali/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
+    .line 209
+    invoke-virtual {p0}, Lnju/software/api/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v0
 
@@ -428,21 +424,21 @@
 
     invoke-virtual {v0, v1, v2, v3}, Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
 
-    .line 217
+    .line 211
     new-instance v7, Landroid/content/ContentValues;
 
     invoke-direct {v7}, Landroid/content/ContentValues;-><init>()V
 
-    .line 218
-    .local v7, ct2:Landroid/content/ContentValues;
+    .line 212
+    .local v7, "ct2":Landroid/content/ContentValues;
     const-string v0, "sink2"
 
     const-string v1, "content2"
 
     invoke-virtual {v7, v0, v1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 219
-    invoke-virtual {p0}, Lcom/example/messagesmali/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
+    .line 213
+    invoke-virtual {p0}, Lnju/software/api/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v0
 
@@ -452,14 +448,13 @@
 
     invoke-virtual {v0, v1, v7, v2, v3}, Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
 
-    .line 221
-    invoke-virtual {p0}, Lcom/example/messagesmali/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
+    .line 215
+    invoke-virtual {p0}, Lnju/software/api/SinkSetAPI;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v0
 
     sget-object v1, Landroid/provider/Contacts$People;->CONTENT_URI:Landroid/net/Uri;
 
-    .line 222
     const/4 v2, 0x2
 
     new-array v2, v2, [Ljava/lang/String;
@@ -480,13 +475,12 @@
 
     move-object v5, v3
 
-    .line 221
     invoke-virtual/range {v0 .. v5}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
 
     move-result-object v8
 
-    .line 223
-    .local v8, cursor:Landroid/database/Cursor;
+    .line 217
+    .local v8, "cursor":Landroid/database/Cursor;
     return-void
 .end method
 
@@ -500,57 +494,55 @@
     invoke-direct {v0}, Landroid/content/Intent;-><init>()V
 
     .line 125
-    .local v0, intent:Landroid/content/Intent;
-    invoke-virtual {p0, v0}, Lcom/example/messagesmali/SinkSetAPI;->sendBroadcast(Landroid/content/Intent;)V
+    .local v0, "intent":Landroid/content/Intent;
+    invoke-virtual {p0, v0}, Lnju/software/api/SinkSetAPI;->sendBroadcast(Landroid/content/Intent;)V
 
     .line 126
     const-string v3, "permission"
 
-    invoke-virtual {p0, v0, v3}, Lcom/example/messagesmali/SinkSetAPI;->sendBroadcast(Landroid/content/Intent;Ljava/lang/String;)V
+    invoke-virtual {p0, v0, v3}, Lnju/software/api/SinkSetAPI;->sendBroadcast(Landroid/content/Intent;Ljava/lang/String;)V
 
-    .line 128
-    new-instance v2, Lcom/example/messagesmali/SinkSetAPI$1;
+    .line 127
+    new-instance v2, Lnju/software/api/SinkSetAPI$1;
 
-    invoke-direct {v2, p0}, Lcom/example/messagesmali/SinkSetAPI$1;-><init>(Lcom/example/messagesmali/SinkSetAPI;)V
+    invoke-direct {v2, p0}, Lnju/software/api/SinkSetAPI$1;-><init>(Lnju/software/api/SinkSetAPI;)V
 
-    .line 136
-    .local v2, myBroadcastReceiver:Landroid/content/BroadcastReceiver;
+    .line 132
+    .local v2, "myBroadcastReceiver":Landroid/content/BroadcastReceiver;
     new-instance v1, Landroid/content/IntentFilter;
 
     invoke-direct {v1}, Landroid/content/IntentFilter;-><init>()V
 
-    .line 137
-    .local v1, intentFilter:Landroid/content/IntentFilter;
+    .line 133
+    .local v1, "intentFilter":Landroid/content/IntentFilter;
     const-string v3, "action"
 
     invoke-virtual {v1, v3}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
 
-    .line 139
-    invoke-virtual {p0, v2, v1}, Lcom/example/messagesmali/SinkSetAPI;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
+    .line 134
+    invoke-virtual {p0, v2, v1}, Lnju/software/api/SinkSetAPI;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;
 
-    .line 140
+    .line 135
     const-string v3, "permission"
 
-    .line 141
     new-instance v4, Landroid/os/Handler;
 
     invoke-direct {v4}, Landroid/os/Handler;-><init>()V
 
-    .line 140
-    invoke-virtual {p0, v2, v1, v3, v4}, Lcom/example/messagesmali/SinkSetAPI;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
+    invoke-virtual {p0, v2, v1, v3, v4}, Lnju/software/api/SinkSetAPI;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
 
-    .line 143
-    invoke-virtual {p0, v0}, Lcom/example/messagesmali/SinkSetAPI;->startActivity(Landroid/content/Intent;)V
+    .line 137
+    invoke-virtual {p0, v0}, Lnju/software/api/SinkSetAPI;->startActivity(Landroid/content/Intent;)V
 
-    .line 144
-    invoke-virtual {p0, v0}, Lcom/example/messagesmali/SinkSetAPI;->startService(Landroid/content/Intent;)Landroid/content/ComponentName;
+    .line 138
+    invoke-virtual {p0, v0}, Lnju/software/api/SinkSetAPI;->startService(Landroid/content/Intent;)Landroid/content/ComponentName;
 
-    .line 145
+    .line 139
     const/4 v3, 0x1
 
-    invoke-virtual {p0, v3, v0}, Lcom/example/messagesmali/SinkSetAPI;->setResult(ILandroid/content/Intent;)V
+    invoke-virtual {p0, v3, v0}, Lnju/software/api/SinkSetAPI;->setResult(ILandroid/content/Intent;)V
 
-    .line 147
+    .line 141
     return-void
 .end method
 
@@ -564,7 +556,7 @@
     invoke-direct {v0}, Landroid/content/Intent;-><init>()V
 
     .line 117
-    .local v0, intent:Landroid/content/Intent;
+    .local v0, "intent":Landroid/content/Intent;
     const-string v1, "testAction"
 
     invoke-virtual {v0, v1}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
@@ -617,7 +609,7 @@
     invoke-direct {v0, v1}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
 
     .line 110
-    .local v0, outputStream:Ljava/io/OutputStream;
+    .local v0, "outputStream":Ljava/io/OutputStream;
     const-string v1, "test"
 
     invoke-virtual {v1}, Ljava/lang/String;->getBytes()[B
@@ -773,33 +765,33 @@
     .prologue
     const/4 v2, 0x1
 
-    .line 150
+    .line 144
     new-instance v0, Landroid/media/MediaRecorder;
 
     invoke-direct {v0}, Landroid/media/MediaRecorder;-><init>()V
 
-    .line 151
-    .local v0, mRecorder:Landroid/media/MediaRecorder;
+    .line 145
+    .local v0, "mRecorder":Landroid/media/MediaRecorder;
     const/4 v1, 0x5
 
     invoke-virtual {v0, v1}, Landroid/media/MediaRecorder;->setAudioSource(I)V
 
-    .line 152
+    .line 146
     invoke-virtual {v0, v2}, Landroid/media/MediaRecorder;->setVideoSource(I)V
 
-    .line 153
+    .line 147
     invoke-virtual {v0, v2}, Landroid/media/MediaRecorder;->setOutputFormat(I)V
 
-    .line 154
+    .line 148
     invoke-virtual {v0, v2}, Landroid/media/MediaRecorder;->setAudioEncoder(I)V
 
-    .line 155
+    .line 149
     invoke-virtual {v0, v2}, Landroid/media/MediaRecorder;->setVideoEncoder(I)V
 
-    .line 156
+    .line 150
     invoke-virtual {v0}, Landroid/media/MediaRecorder;->start()V
 
-    .line 157
+    .line 151
     return-void
 .end method
 
@@ -809,13 +801,13 @@
     .prologue
     const/4 v2, 0x0
 
-    .line 160
+    .line 154
     invoke-static {}, Landroid/telephony/SmsManager;->getDefault()Landroid/telephony/SmsManager;
 
     move-result-object v0
 
-    .line 161
-    .local v0, smsManager:Landroid/telephony/SmsManager;
+    .line 155
+    .local v0, "smsManager":Landroid/telephony/SmsManager;
     const-string v1, "123456789"
 
     const-string v3, "test"
@@ -826,11 +818,11 @@
 
     invoke-virtual/range {v0 .. v5}, Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V
 
-    .line 163
+    .line 157
     const/16 v3, 0x3e8
 
-    .line 164
-    .local v3, port:S
+    .line 158
+    .local v3, "port":S
     const-string v1, "123456789"
 
     const-string v4, "test"
@@ -845,15 +837,15 @@
 
     invoke-virtual/range {v0 .. v6}, Landroid/telephony/SmsManager;->sendDataMessage(Ljava/lang/String;Ljava/lang/String;S[BLandroid/app/PendingIntent;Landroid/app/PendingIntent;)V
 
-    .line 167
+    .line 161
     const-string v1, "test"
 
     invoke-virtual {v0, v1}, Landroid/telephony/SmsManager;->divideMessage(Ljava/lang/String;)Ljava/util/ArrayList;
 
     move-result-object v7
 
-    .line 168
-    .local v7, parts:Ljava/util/ArrayList;,"Ljava/util/ArrayList<Ljava/lang/String;>;"
+    .line 162
+    .local v7, "parts":Ljava/util/ArrayList;, "Ljava/util/ArrayList<Ljava/lang/String;>;"
     const-string v5, "123456789"
 
     move-object v4, v0
@@ -866,7 +858,7 @@
 
     invoke-virtual/range {v4 .. v9}, Landroid/telephony/SmsManager;->sendMultipartTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/util/ArrayList;Ljava/util/ArrayList;Ljava/util/ArrayList;)V
 
-    .line 170
+    .line 164
     return-void
 .end method
 
@@ -879,50 +871,45 @@
     .end annotation
 
     .prologue
-    .line 187
+    .line 181
     new-instance v1, Ljava/net/URL;
 
     const-string v2, ""
 
     invoke-direct {v1, v2}, Ljava/net/URL;-><init>(Ljava/lang/String;)V
 
-    .line 189
-    .local v1, url:Ljava/net/URL;
+    .line 183
+    .local v1, "url":Ljava/net/URL;
     invoke-virtual {v1}, Ljava/net/URL;->openConnection()Ljava/net/URLConnection;
 
     move-result-object v0
 
     check-cast v0, Ljava/net/HttpURLConnection;
 
-    .line 190
-    .local v0, connection:Ljava/net/HttpURLConnection;
+    .line 184
+    .local v0, "connection":Ljava/net/HttpURLConnection;
     const-string v2, "POST"
 
     invoke-virtual {v0, v2}, Ljava/net/HttpURLConnection;->setRequestMethod(Ljava/lang/String;)V
 
-    .line 191
+    .line 185
     const-string v2, "Connection"
 
     const-string v3, "Keep-Alive"
 
     invoke-virtual {v0, v2, v3}, Ljava/net/HttpURLConnection;->setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
 
-    .line 192
+    .line 186
     return-void
 .end method
 
 .method protected onCreate(Landroid/os/Bundle;)V
-    .locals 1
-    .parameter "savedInstanceState"
+    .locals 0
+    .param p1, "savedInstanceState"    # Landroid/os/Bundle;
 
     .prologue
     .line 47
     invoke-super {p0, p1}, Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V
-
-    .line 48
-    const v0, 0x7f030018
-
-    invoke-virtual {p0, v0}, Lcom/example/messagesmali/SinkSetAPI;->setContentView(I)V
 
     .line 49
     return-void
@@ -937,7 +924,7 @@
     .end annotation
 
     .prologue
-    .line 226
+    .line 220
     new-instance v0, Ljava/lang/ProcessBuilder;
 
     const/4 v1, 0x1
@@ -952,11 +939,11 @@
 
     invoke-direct {v0, v1}, Ljava/lang/ProcessBuilder;-><init>([Ljava/lang/String;)V
 
-    .line 227
-    .local v0, processBuilder:Ljava/lang/ProcessBuilder;
+    .line 221
+    .local v0, "processBuilder":Ljava/lang/ProcessBuilder;
     invoke-virtual {v0}, Ljava/lang/ProcessBuilder;->start()Ljava/lang/Process;
 
-    .line 228
+    .line 222
     return-void
 .end method
 
@@ -966,57 +953,57 @@
     .prologue
     const/4 v3, 0x0
 
-    .line 173
+    .line 167
     const-string v2, "preferenceSink"
 
-    invoke-virtual {p0, v2, v3}, Lcom/example/messagesmali/SinkSetAPI;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
+    invoke-virtual {p0, v2, v3}, Lnju/software/api/SinkSetAPI;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
 
     move-result-object v1
 
-    .line 175
-    .local v1, sp:Landroid/content/SharedPreferences;
+    .line 169
+    .local v1, "sp":Landroid/content/SharedPreferences;
     invoke-interface {v1}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
 
     move-result-object v0
 
-    .line 177
-    .local v0, editor:Landroid/content/SharedPreferences$Editor;
+    .line 171
+    .local v0, "editor":Landroid/content/SharedPreferences$Editor;
     const-string v2, "sharedBool"
 
     invoke-interface {v0, v2, v3}, Landroid/content/SharedPreferences$Editor;->putBoolean(Ljava/lang/String;Z)Landroid/content/SharedPreferences$Editor;
 
-    .line 178
+    .line 172
     const-string v2, "sharedFloat"
 
-    const v3, 0x40d33333
+    const v3, 0x40d33333    # 6.6f
 
     invoke-interface {v0, v2, v3}, Landroid/content/SharedPreferences$Editor;->putFloat(Ljava/lang/String;F)Landroid/content/SharedPreferences$Editor;
 
-    .line 179
+    .line 173
     const-string v2, "sharedInt"
 
     const/16 v3, 0x8
 
     invoke-interface {v0, v2, v3}, Landroid/content/SharedPreferences$Editor;->putInt(Ljava/lang/String;I)Landroid/content/SharedPreferences$Editor;
 
-    .line 180
+    .line 174
     const-string v2, "sharedLong"
 
     const-wide/32 v3, 0xd9038
 
     invoke-interface {v0, v2, v3, v4}, Landroid/content/SharedPreferences$Editor;->putLong(Ljava/lang/String;J)Landroid/content/SharedPreferences$Editor;
 
-    .line 181
+    .line 175
     const-string v2, "sharedString"
 
     const-string v3, "testSink"
 
     invoke-interface {v0, v2, v3}, Landroid/content/SharedPreferences$Editor;->putString(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;
 
-    .line 183
+    .line 177
     invoke-interface {v0}, Landroid/content/SharedPreferences$Editor;->commit()Z
 
-    .line 184
+    .line 178
     return-void
 .end method
 
@@ -1029,13 +1016,13 @@
     .end annotation
 
     .prologue
-    .line 195
+    .line 189
     new-instance v0, Ljava/net/Socket;
 
     invoke-direct {v0}, Ljava/net/Socket;-><init>()V
 
-    .line 196
-    .local v0, socket:Ljava/net/Socket;
+    .line 190
+    .local v0, "socket":Ljava/net/Socket;
     new-instance v1, Ljava/net/InetSocketAddress;
 
     const/16 v2, 0x1f90
@@ -1044,9 +1031,9 @@
 
     invoke-virtual {v0, v1}, Ljava/net/Socket;->connect(Ljava/net/SocketAddress;)V
 
-    .line 198
+    .line 192
     invoke-virtual {v0}, Ljava/net/Socket;->close()V
 
-    .line 199
+    .line 193
     return-void
 .end method

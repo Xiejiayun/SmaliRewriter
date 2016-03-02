@@ -15,7 +15,7 @@ public class Main {
 	static List<String> messageList;
 
 	/*
-	 * 1.调用SmaliParser.parser()方法反编译apk文件
+	 * 1.调用Decompiler.decompile()方法反编译apk文件
 	 * 2.调用SinkPointSearch.searchMessageSmalis方法来搜索发送短信的smali方法
 	 * 3.调用SmaliRewriter类的相关方法来插入相应的smali代码
 	 * 4.调用SmaliRepackage.repackage方法来重新打包新的项目
@@ -23,23 +23,16 @@ public class Main {
 	public static void main(String[] args) {
 
 		Decompiler.decompile(Constants.apkToSmali);
-
-		try {
-			messageList = SinkPointSearch
-					.searchMessageSmalis("MessageSmaliExample.smali");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		SmaliRewriter smaliRewriter = new SmaliRewriter();
+        messageList = SinkPointSearch
+                .searchMessageSmalis("MessageSmaliExample.smali");
+        SmaliRewriter smaliRewriter = new SmaliRewriter();
 		try {
 			smaliRewriter.readSmalis(
 					"D://androidAPK//SendSMSAutoDapk",
-					"CheckMessage.smali", messageList);
+					"CheckMessageRule.smali", messageList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		SmaliRepackage.repackage(Constants.smaliToApk);
 	}
 
