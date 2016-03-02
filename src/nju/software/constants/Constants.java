@@ -9,4 +9,6 @@ public class Constants {
 
     public static final String smaliToApk = "SmaliToApk.bat";
 
+    public static final String fileSpliter = "/";
+
 }
