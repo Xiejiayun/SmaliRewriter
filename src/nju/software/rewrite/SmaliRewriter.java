@@ -13,8 +13,13 @@ import java.util.Map;
  */
 public class SmaliRewriter {
 
-    /*
+    /**
      * 遍历项目，同归递归，查找所有的后缀为smali的文件
+     *
+     * @param filePath
+     * @param filePath2
+     * @param messageList
+     * @throws Exception
      */
     public void readSmalis(String filePath, String filePath2,
                            List<String> messageList) throws Exception {
@@ -26,6 +31,7 @@ public class SmaliRewriter {
                 readSmalis(file.getAbsolutePath(), filePath2, messageList);
             } else {
                 // 对所有的smali文件调用searchSMS方法处理
+                //TODO 在这边我们可以针对想要调用的入口点方法，沉淀点方法进行查找
                 if (file.getName().endsWith(".smali")) {
                     try {
                         searchSMS(file.getAbsolutePath(), filePath2,
@@ -39,8 +45,14 @@ public class SmaliRewriter {
         }
     }
 
-    /*
+
+    /**
      * （1）搜索目标代码，查找指定入口点和出口点 查找发送短信的代码
+     *
+     * @param filePath
+     * @param filePath2
+     * @param messageList
+     * @throws Exception
      */
     public void searchSMS(String filePath, String filePath2,
                           List<String> messageList) throws Exception {
@@ -55,8 +67,8 @@ public class SmaliRewriter {
         // 记录第一行内容，从中提取出包名
         String firstLine = null;
 
-        // 记录所有的需要修改的行
-        Map<Integer, Integer> insertMap = new HashMap<Integer, Integer>();
+        // 记录所有的需要修改的行filePath
+        Map<Integer, Integer> insertMap = new HashMap<>();
         // 遍历文件的每一行，查找发送短信的相关代码
         while ((lineText = bufferedReader.readLine()) != null) {
             lineNumber++;
@@ -73,11 +85,9 @@ public class SmaliRewriter {
                     } else {
                         methodType = 3;
                     }
-
                     insertMap.put(lineNumber, methodType);
                 }
             }
-
         }
 
         bufferedReader.close();
@@ -89,20 +99,33 @@ public class SmaliRewriter {
 
     }
 
-    /*
+
+    /**
      * 查找通过网络泄露隐私数据的方法
+     *
+     * @param filePath
+     * @param filePath2
+     * @param networkList
+     * @throws Exception
      */
     public void searchNetwork(String filePath, String filePath2,
                               List<String> networkList) throws Exception {
 
     }
 
-    /*
-     * （2）在搜索到的点插入相应的规则 首先将要添加的smali文件拷贝到相应的目录下 其次，在被添加的相应smali文件中添加invoke代码
+
+    /**
+     * 在搜索到的点插入相应的规则 首先将要添加的smali文件拷贝到相应的目录下 其次，在被添加的相应smali文件中添加invoke代码
      * file是要添加smali文件的目标文件 file2是要拷贝的smali文件 lineNumber是要出入的位置的行号
      * methodType是要处理的发送短信的方式的类别 firstLine是文件的第一行内容，包含包名，等一下要从中提取出包名
+     *
+     * @param objectFile 目标文件
+     * @param copyFile   拷贝文件
+     * @param insertMap  插入映射
+     * @param firstLine  第一行数据
+     * @throws Exception
      */
-    private void insertSmalis(File file, File file2,
+    private void insertSmalis(File objectFile, File copyFile,
                               Map<Integer, Integer> insertMap, String firstLine) throws Exception {
         // System.out.println("methodType: " + methodType);
         if (insertMap.size() == 0) {
@@ -111,10 +134,10 @@ public class SmaliRewriter {
         System.out.println("firstLine: " + firstLine);
 
         // System.out.println("lineNumber:" + lineNumber);
-        File parentDir = file.getParentFile();
+        File parentDir = objectFile.getParentFile();
         // 将要添加的smali文件file2拷贝到相应的目录file下，名字同file2一样
         File file3 = new File(parentDir.getAbsolutePath() + "/"
-                + file2.getName());
+                + copyFile.getName());
 
         // System.out.println(parentDir.getAbsolutePath());
         // 提取包名
@@ -124,14 +147,18 @@ public class SmaliRewriter {
         String packageName = temp.substring(0, temp.lastIndexOf('/') + 1);
         // System.out.println("packageName: " + packageName);
 
-        fileChannelCopy(file2, file3);
+        fileChannelCopy(copyFile, file3);
         modifyFilterFile(packageName, file3);
         // 根据实际的情况调用不同的插入方法，分别对发送短信和通过网络的方式插入相应的代码
-        insertSMSSmalis(file, packageName, insertMap, firstLine);
+        insertSMSSmalis(objectFile, packageName, insertMap, firstLine);
     }
 
-    /*
+    /**
      * 在发送短信的方法之前插入相应的代码
+     * @param file
+     * @param packageName
+     * @param insertMap
+     * @param firstLine
      */
     private void insertSMSSmalis(File file, String packageName,
                                  Map<Integer, Integer> insertMap, String firstLine) {
@@ -186,17 +213,19 @@ public class SmaliRewriter {
 
     }
 
-    /*
+    /**
      * 使用文件通道的方式复制文件
+     *
+     * @param source 源文件
+     * @param dest   目标文件
+     * @throws Exception
      */
-    private void fileChannelCopy(File s, File t) throws Exception {
-
-        FileInputStream fi = new FileInputStream(s);
-        FileOutputStream fo = new FileOutputStream(t);
+    private void fileChannelCopy(File source, File dest) throws Exception {
+        FileInputStream fi = new FileInputStream(source);
+        FileOutputStream fo = new FileOutputStream(dest);
         FileChannel in = fi.getChannel();// 得到对应的文件通道
         FileChannel out = fo.getChannel();// 得到对应的文件通道
         try {
-
             in.transferTo(0, in.size(), out);// 连接两个通道，并且从in通道读取，然后写入out通道
         } catch (IOException e) {
             e.printStackTrace();
@@ -261,7 +290,13 @@ public class SmaliRewriter {
         System.out.println("over!");
     }
 
-    // 修改添加的监控文件的包名
+    /**
+     * 修改添加的监控文件的包名
+     *
+     * @param packageName 包名
+     * @param inFile      输入文件
+     * @throws IOException
+     */
     private void modifyFilterFile(String packageName, File inFile)
             throws IOException {
         System.out.println("rename!");
@@ -296,7 +331,6 @@ public class SmaliRewriter {
             else {
                 out.println(thisLine);
             }
-
         }
         out.flush();
         out.close();
