@@ -6,13 +6,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * 反编译
+ *
  * Created by Xie on 2016/3/1.
  */
 public class Decompiler {
 
-    /*
-	 * 调用执行apktool的bat文件将一个apk文件反编译成smali文件
-	 */
+    /**
+     * 调用执行apktool的bat文件将一个apk文件反编译成smali文件
+     *
+     * @param filePath bat文件路径
+     */
     public static void decompile(String filePath) {
         System.out.println("run decompiling...");
         Runtime rt = Runtime.getRuntime();

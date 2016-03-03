@@ -74,6 +74,4 @@ public class SinkPointSearch {
 		}
 		return messageList;
 	}
-
-
 }
