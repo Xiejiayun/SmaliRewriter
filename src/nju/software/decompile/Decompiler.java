@@ -35,8 +35,8 @@ public class Decompiler {
             System.out.println("finish decompiling...");
         } catch (IOException e) {
             System.out.println("执行apkToSmali.bat文件出错！");
+            e.printStackTrace();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

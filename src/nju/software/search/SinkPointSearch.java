@@ -14,8 +14,8 @@ public class SinkPointSearch {
 	/*
 	 * 查找发送短信的smali代码
 	 */
-	public static List<String> searchMessageSmalis(String filePath) {
-		List<String> messageList = new ArrayList<String>();
+	public static List<String> searchSmalis(String filePath) {
+		List<String> messageList = new ArrayList<>();
 		try {
 			File file = new File(filePath);
 			FileInputStream inputStream = new FileInputStream(file);
@@ -24,10 +24,8 @@ public class SinkPointSearch {
 			String lineText = null;
 			// 遍历文件的每一行，查找发送短信的相关代码
 			while ((lineText = bufferedReader.readLine()) != null) {
-				if (lineText.contains("sendTextMessage")
-						|| lineText.contains("sendDataMessage")
-						|| lineText.contains("sendMultipartTextMessage")) {
-					System.out.println("text:  " + lineText.replace(" ", ""));
+				if (lineText.contains("invoke-virtual")) {
+//					System.out.println("text:  " + lineText.replace(" ", ""));
 					messageList.add(lineText);
 				}
 			}
