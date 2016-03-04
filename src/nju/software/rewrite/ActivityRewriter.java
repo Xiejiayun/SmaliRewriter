@@ -69,6 +69,17 @@ public class ActivityRewriter extends AbstractRewriter {
                             "return-void\n";
                     break;
                 case 2:
+                    lineToBeInserted = "\tconst/4 v3, 0x0\n" +
+                             "\tinvoke-virtual {p0}, Lorg/cert/sendsms/MainActivity;->getIntent()Landroid/content/Intent;\n" +
+                             "\tmove-result-object v2\n" +
+                             "\tinvoke-static {v3, v3, v2, p0}, Lorg/cert/sendsms/CheckActivityRule;->isPermissionRedelegation(IILandroid/content/Intent;Landroid/app/Activity;)Z\n" +
+                             "\tmove-result v1\n" +
+                             "\t.local v1, \"isPermissionRedelegation\":Z\n" +
+                             "\tif-eqz v1, :cond_0\n" +
+                             "\tinvoke-static {p0}, Lorg/cert/sendsms/CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
+                             "\t:goto_0\n" +
+                             "\treturn-void\n" +
+                             "\t:cond_0";
                     break;
                 default:
                     break;
