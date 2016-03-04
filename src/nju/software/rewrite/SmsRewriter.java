@@ -49,7 +49,7 @@ public class SmsRewriter extends AbstractRewriter {
         Arrays.sort(keys);
 
         int index = 0;
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = keys.length-1; i >= 0; i--) {
 
             int lineNumber = (Integer) keys[i];
             System.out.println("行号" + lineNumber);

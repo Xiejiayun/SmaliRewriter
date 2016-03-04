@@ -51,8 +51,7 @@ public class ActivityRewriter extends AbstractRewriter {
         Arrays.sort(keys);
 
         int index = 0;
-        for (int i = 0; i < keys.length; i++) {
-
+        for (int i = keys.length-1; i >= 0; i--) {
             int lineNumber = (Integer) keys[i];
             System.out.println("行号" + lineNumber);
             int methodType = insertMap.get(lineNumber);
@@ -69,17 +68,15 @@ public class ActivityRewriter extends AbstractRewriter {
                             "return-void\n";
                     break;
                 case 2:
-                    lineToBeInserted = "\tconst/4 v3, 0x0\n" +
-                             "\tinvoke-virtual {p0}, Lorg/cert/sendsms/MainActivity;->getIntent()Landroid/content/Intent;\n" +
-                             "\tmove-result-object v2\n" +
-                             "\tinvoke-static {v3, v3, v2, p0}, Lorg/cert/sendsms/CheckActivityRule;->isPermissionRedelegation(IILandroid/content/Intent;Landroid/app/Activity;)Z\n" +
-                             "\tmove-result v1\n" +
-                             "\t.local v1, \"isPermissionRedelegation\":Z\n" +
-                             "\tif-eqz v1, :cond_0\n" +
-                             "\tinvoke-static {p0}, Lorg/cert/sendsms/CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
-                             "\t:goto_0\n" +
-                             "\treturn-void\n" +
-                             "\t:cond_0";
+                    lineToBeInserted =
+                    " \tinvoke-static {p0},"  + packageName + "CheckActivityRule;->isPermissionRedelegation(Landroid/app/Activity;)Z\n" +
+                            "\tmove-result v1\n" +
+                            "\t.local v1, \"isPermissionRedelegation\":Z\n" +
+                            "\tif-eqz v1, :cond_0\n" +
+                            "\tinvoke-static {p0},"+ packageName +"CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
+                            "\t:goto_0\n" +
+                            "\treturn-void\n" +
+                            "\t:cond_0";
                     break;
                 default:
                     break;
@@ -103,22 +100,20 @@ public class ActivityRewriter extends AbstractRewriter {
             for (String message : messageList) {
                 if (lineText.replace(" ", "").equals(message.replace(" ", ""))) {
                     if (lineText.contains(".method protected onActivityResult(IILandroid/content/Intent;)V")) {
-                        int count = lineNumber;
                         while ((lineText = bufferedReader.readLine()) != null) {
-                            count++;
+                            lineNumber++;
                             if (lineText.contains(".prologue")) {
-                                if (insertMap.get(count + 1) == null)
-                                    insertMap.put(count + 1, 1);
+                                if (insertMap.get(lineNumber + 1) == null)
+                                    insertMap.put(lineNumber + 1, 1);
                                 break;
                             }
                         }
                     } else if (lineText.contains(".method protected onCreate(Landroid/os/Bundle;)V")) {
-                        int count = lineNumber;
                         while ((lineText = bufferedReader.readLine()) != null) {
-                            count++;
+                            lineNumber++;
                             if (lineText.contains(".prologue")) {
-                                if (insertMap.get(count + 1) == null)
-                                    insertMap.put(count + 1, 2);
+                                if (insertMap.get(lineNumber + 1) == null)
+                                    insertMap.put(lineNumber + 1, 2);
                                 break;
                             }
                         }
