@@ -4,6 +4,7 @@ import nju.software.constants.Constants;
 import nju.software.decompile.Decompiler;
 import nju.software.repackage.SmaliRepackage;
 import nju.software.rewrite.SmaliRewriter;
+import nju.software.search.EntryPointSearch;
 import nju.software.search.SinkPointSearch;
 
 import java.util.List;
@@ -30,7 +31,13 @@ public class Main {
 
 //            String apkFileFolder = apkFilePath.endsWith(".apk") ?
 //                    apkFilePath.substring(0, apkFilePath.length() - 4) : apkFilePath;
-            smaliRewriter.readSmalis(
+            messageList = SinkPointSearch
+                    .searchSmalis("SinkSetAPI.smali");
+            smaliRewriter.readSinkSmalis(
+                    "D://androidAPK//SendSMSAutoDapk//smali//org", messageList);
+            messageList = EntryPointSearch
+                    .searchSmalis("EntrySetAPI.smali");
+            smaliRewriter.readEntrySmalis(
                     "D://androidAPK//SendSMSAutoDapk//smali//org", messageList);
         } catch (Exception e) {
             e.printStackTrace();

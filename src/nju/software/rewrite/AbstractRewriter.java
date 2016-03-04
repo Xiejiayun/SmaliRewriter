@@ -114,6 +114,8 @@ public abstract class AbstractRewriter {
      */
     protected void insertStringInFile(File inFile, int lineno,
                                     String lineToBeInserted) throws Exception {
+        if (lineToBeInserted == null)
+            return;
         System.out.println("Mehtod:insertStringInFile!   "
                 + inFile.getAbsolutePath());
         System.out.println("Method:lineno" + lineno);
@@ -203,25 +205,6 @@ public abstract class AbstractRewriter {
         inFile.delete();
         // 把临时文件改名为原文件名
         outFile.renameTo(inFile);
-    }
-
-    protected Map generateInsertmap(List<String> messageList, BufferedReader bufferedReader, int lineNumber, String firstLine, Map<Integer, Integer> insertMap) throws IOException {
-        String lineText;
-        while ((lineText = bufferedReader.readLine()) != null) {
-            lineNumber++;
-            for (String message : messageList) {
-                if (lineText.replace(" ", "").equals(message.replace(" ", ""))) {
-                    int methodType;
-                    if (message.contains("onActivityResult")) {
-                        methodType = 1;
-                    } else {
-                        methodType = 2;
-                    }
-                    insertMap.put(lineNumber, methodType);
-                }
-            }
-        }
-        return insertMap;
     }
 
     /**

@@ -68,17 +68,55 @@ public class ActivityRewriter extends AbstractRewriter {
                             "invoke-static {p0}," + packageName + "CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
                             "return-void\n";
                     break;
+                case 2:
+                    break;
                 default:
                     break;
             }
 
             try {
-                insertStringInFile(objectFile, (lineNumber - 1 + index),
+                insertStringInFile(objectFile, (lineNumber + index),
                         lineToBeInserted);
             } catch (Exception e) {
                 System.out.println("插入smali代码时出错！");
             }
             index++;
         }
+    }
+
+    protected Map generateInsertmap(List<String> messageList, BufferedReader bufferedReader, int lineNumber, String firstLine, Map<Integer, Integer> insertMap) throws IOException {
+        String lineText;
+        while ((lineText = bufferedReader.readLine()) != null) {
+            lineNumber++;
+            int methodType;
+            for (String message : messageList) {
+                if (lineText.replace(" ", "").equals(message.replace(" ", ""))) {
+                    if (lineText.contains(".method protected onActivityResult(IILandroid/content/Intent;)V")) {
+                        int count = lineNumber;
+                        while ((lineText = bufferedReader.readLine()) != null) {
+                            count++;
+                            if (lineText.contains(".prologue")) {
+                                if (insertMap.get(count + 1) == null)
+                                    insertMap.put(count + 1, 1);
+                                break;
+                            }
+                        }
+                    } else if (lineText.contains(".method protected onCreate(Landroid/os/Bundle;)V")) {
+                        int count = lineNumber;
+                        while ((lineText = bufferedReader.readLine()) != null) {
+                            count++;
+                            if (lineText.contains(".prologue")) {
+                                if (insertMap.get(count + 1) == null)
+                                    insertMap.put(count + 1, 2);
+                                break;
+                            }
+                        }
+                    } else {
+                        insertMap.put(lineNumber, 3);
+                    }
+                }
+            }
+        }
+        return insertMap;
     }
 }

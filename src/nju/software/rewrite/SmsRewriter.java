@@ -1,7 +1,5 @@
 package nju.software.rewrite;
 
-import nju.software.constants.SmaliFileEnum;
-
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,12 +78,33 @@ public class SmsRewriter extends AbstractRewriter {
             }
 
             try {
-                insertStringInFile(objectFile, (lineNumber - 1 + index),
+                insertStringInFile(objectFile, (lineNumber + index),
                         lineToBeInserted);
             } catch (Exception e) {
                 System.out.println("插入smali代码时出错！");
             }
             index++;
         }
+    }
+
+    protected Map generateInsertmap(List<String> messageList, BufferedReader bufferedReader, int lineNumber, String firstLine, Map<Integer, Integer> insertMap) throws IOException {
+        String lineText;
+        while ((lineText = bufferedReader.readLine()) != null) {
+            lineNumber++;
+            for (String message : messageList) {
+                if (lineText.replace(" ", "").equals(message.replace(" ", ""))) {
+                    int methodType;
+                    if (message.contains("sendTextMessage")) {
+                        methodType = 1;
+                    } else if (message.contains("sendDataMessage")) {
+                        methodType = 2;
+                    } else {
+                        methodType = 3;
+                    }
+                    insertMap.put(lineNumber, methodType);
+                }
+            }
+        }
+        return insertMap;
     }
 }
