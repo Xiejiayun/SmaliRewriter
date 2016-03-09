@@ -1,7 +1,5 @@
 package nju.software.rewrite;
 
-import nju.software.constants.SmaliFileEnum;
-
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.List;
@@ -23,7 +21,7 @@ public abstract class AbstractRewriter {
     public abstract void search(String smaliFile, String ruleFile, List<String> messageList);
 
     /**
-     * 在搜索到的点插入相应的规则 首先将要添加的smali文件拷贝到相应的目录下 其次，在被添加的相应smali文件中添加invoke代码
+     * （2）在搜索到的点插入相应的规则 首先将要添加的smali文件拷贝到相应的目录下 其次，在被添加的相应smali文件中添加invoke代码
      * objectFile是要添加smali文件的目标文件 copyFile是要拷贝的smali文件 lineNumber是要出入的位置的行号
      * methodType是要处理的发送短信的方式的类别 firstLine是文件的第一行内容，包含包名，等一下要从中提取出包名
      *
@@ -67,7 +65,8 @@ public abstract class AbstractRewriter {
     }
 
     /**
-     * 在关键点前插入代码
+     * （3）在关键点前插入代码
+     *
      * @param objectFile
      * @param packageName
      * @param insertMap
@@ -113,7 +112,7 @@ public abstract class AbstractRewriter {
      * @throws Exception IO操作引发的异常
      */
     protected void insertStringInFile(File inFile, int lineno,
-                                    String lineToBeInserted) throws Exception {
+                                      String lineToBeInserted) throws Exception {
         if (lineToBeInserted == null)
             return;
         System.out.println("Mehtod:insertStringInFile!   "
@@ -209,6 +208,7 @@ public abstract class AbstractRewriter {
 
     /**
      * 生成第一行的信息
+     *
      * @return
      */
     protected String generateFirstLine(BufferedReader bufferedReader) {
@@ -224,8 +224,5 @@ public abstract class AbstractRewriter {
             e.printStackTrace();
         }
         return firstLine;
-
     }
-
-
 }

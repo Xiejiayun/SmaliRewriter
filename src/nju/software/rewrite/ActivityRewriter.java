@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public class ActivityRewriter extends AbstractRewriter {
 
+
     @Override
     public void search(String smaliFile, String ruleFile, List<String> messageList) {
         try {

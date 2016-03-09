@@ -1,9 +1,9 @@
 package nju.software.rules.sink;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class CheckMessageRule {
 

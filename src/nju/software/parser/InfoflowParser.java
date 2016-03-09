@@ -4,10 +4,7 @@ import nju.software.constants.Constants;
 import nju.software.constants.InfoflowEnum;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 提取生成的有用的信息流信息
@@ -32,6 +29,33 @@ public class InfoflowParser {
         Map map3 = InfoflowParser.v().generateSourceExitMap("InterAppCommunication/SendSMS.apk");
         Map map4 = InfoflowParser.v().generateSourceSinkMap("InterAppCommunication/SendSMS.apk");
         System.out.println(map);
+    }
+
+    public static Map<String, Set<String>> generateEntryPointPermissionMap(InputStream is) {
+        Map<String, Set<String>> sourceToExitMap = new HashMap<String, Set<String>>();
+        try {
+            InputStreamReader reader = new InputStreamReader(is);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                //表明这是一个入口点方法
+                if (line.startsWith("<")) {
+                    String method = line;
+                    Set<String> permissions = new HashSet<String>();
+                    line = bufferedReader.readLine();
+                    while (line != null && !line.startsWith("<")) {
+                        permissions.add(line);
+                        line = bufferedReader.readLine();
+                    }
+                    sourceToExitMap.put(method, permissions);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sourceToExitMap;
     }
 
     /**

@@ -103,7 +103,6 @@ public class CheckActivityRule {
 
                 calleePermissionSet.removeAll(callerPermissionsSet);
                 if (calleePermissionSet.size() > 0) {
-
                     return true;
                 }
             } catch (PackageManager.NameNotFoundException e) {

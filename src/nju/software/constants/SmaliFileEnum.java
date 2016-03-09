@@ -6,6 +6,7 @@ package nju.software.constants;
 public enum SmaliFileEnum {
 
     SMS("CheckMessageRule.smali"),
+    NETWORK("CheckNetworkRule.smali"),
     ENTRY("CheckActivityRule.smali");
 
 
