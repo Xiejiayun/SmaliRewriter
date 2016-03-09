@@ -1,10 +1,10 @@
 package nju.software.parser;
 
-import nju.software.constants.Constants;
-import nju.software.constants.InfoflowEnum;
-
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 提取生成的有用的信息流信息
@@ -12,6 +12,35 @@ import java.util.*;
  * Created by Xie on 2016/2/29.
  */
 public class InfoflowParser {
+
+    public static final String fileSpliter = "/";
+
+    public enum InfoflowEnum {
+        //源点到沉淀点，默认为此
+        SOURCETOSINK("SOURCETOSINK"),
+        //源点到出口点
+        SOURCETOEXIT("SOURCETOEXIT"),
+        //入口点到沉淀点
+        ENTRYTOSINK("ENTRYTOSINK"),
+        //入口点到出口点
+        ENTRYTOEXIT("ENTRYTOEXIT"),
+        //入口点到源点，用于构造Android权限方法
+        ENTRYTOSOURCE("ENTRYTOSOURCE");
+
+        private String type;
+
+        InfoflowEnum(String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+    }
 
     private static final InfoflowParser infoflowParser = new InfoflowParser();
 
@@ -31,6 +60,12 @@ public class InfoflowParser {
         System.out.println(map);
     }
 
+    /**
+     * 获取入口点权限的方法映射
+     *
+     * @param is 输入流
+     * @return 映射
+     */
     public static Map<String, Set<String>> generateEntryPointPermissionMap(InputStream is) {
         Map<String, Set<String>> sourceToExitMap = new HashMap<String, Set<String>>();
         try {
@@ -70,7 +105,7 @@ public class InfoflowParser {
         }
         Map<String, Set<String>> sourceToExitMap = new HashMap<>();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + Constants.fileSpliter + "ENTRYPERMISSIONS.txt")));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + fileSpliter + "ENTRYPERMISSIONS.txt")));
             String line = bufferedReader.readLine();
             while (line != null) {
                 //表明这是一个入口点方法
@@ -85,6 +120,7 @@ public class InfoflowParser {
                     sourceToExitMap.put(method, permissions);
                 }
             }
+            bufferedReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -94,18 +130,15 @@ public class InfoflowParser {
     }
 
     /**
-     * 获取入口点权限的方法映射
+     * 获取入口点到出口点的方法映射
      *
-     * @param apkName apk名称
+     * @param is 输入流
      * @return 映射
      */
-    public Map<String, Set<String>> generateEntryExitMap(String apkName) {
-        if (apkName.endsWith(".apk")) {
-            apkName = apkName.substring(0, apkName.length() - 4);
-        }
+    public Map<String, Set<String>> generateEntryExitMap(InputStream is) {
         Map<String, Set<String>> entryToExitMap = new HashMap<>();
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + Constants.fileSpliter + InfoflowEnum.ENTRYTOEXIT+".txt")));
+        try (InputStreamReader reader = new InputStreamReader(is);
+             BufferedReader bufferedReader = new BufferedReader(reader)) {
             entryToExitMap = generateMap(bufferedReader);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -116,7 +149,50 @@ public class InfoflowParser {
     }
 
     /**
-     * 获取入口点权限的方法映射
+     * 获取入口点到出口点的方法映射
+     *
+     * @param apkName apk名称
+     * @return 映射
+     */
+    public Map<String, Set<String>> generateEntryExitMap(String apkName) {
+        if (apkName.endsWith(".apk")) {
+            apkName = apkName.substring(0, apkName.length() - 4);
+        }
+        Map<String, Set<String>> entryToExitMap = new HashMap<>();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + fileSpliter + InfoflowEnum.ENTRYTOEXIT + ".txt")));
+            entryToExitMap = generateMap(bufferedReader);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return entryToExitMap;
+    }
+
+
+    /**
+     * 获取入口点至沉淀点的方法映射
+     *
+     * @param is 输入流
+     * @return 映射
+     */
+    public Map<String, Set<String>> generateEntrySinkMap(InputStream is) {
+        Map<String, Set<String>> entryToSinkMap = new HashMap<>();
+        try (InputStreamReader reader = new InputStreamReader(is);
+             BufferedReader bufferedReader = new BufferedReader(reader)) {
+            entryToSinkMap = generateMap(bufferedReader);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return entryToSinkMap;
+    }
+
+
+    /**
+     * 获取入口点值沉淀点的方法映射
      *
      * @param apkName apk名称
      * @return 映射
@@ -127,9 +203,10 @@ public class InfoflowParser {
         }
         Map<String, Set<String>> entryToSinkMap = new HashMap<>();
         try {
-            File file = new File(apkName + Constants.fileSpliter + InfoflowEnum.ENTRYTOSINK+".txt");
+            File file = new File(apkName + fileSpliter + InfoflowEnum.ENTRYTOSINK + ".txt");
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             entryToSinkMap = generateMap(bufferedReader);
+            bufferedReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -139,7 +216,26 @@ public class InfoflowParser {
     }
 
     /**
-     * 获取入口点权限的方法映射
+     * 获取源点到出口点的方法映射
+     *
+     * @param is 输入流
+     * @return 映射
+     */
+    public Map<String, Set<String>> generateSourceExitMap(InputStream is) {
+        Map<String, Set<String>> sourceToExitMap = new HashMap<>();
+        try (InputStreamReader reader = new InputStreamReader(is);
+             BufferedReader bufferedReader = new BufferedReader(reader)) {
+            sourceToExitMap = generateMap(bufferedReader);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sourceToExitMap;
+    }
+
+    /**
+     * 获取源点到出口点的方法映射
      *
      * @param apkName apk名称
      * @return 映射
@@ -150,7 +246,7 @@ public class InfoflowParser {
         }
         Map<String, Set<String>> sourceToExitMap = new HashMap<>();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + Constants.fileSpliter + InfoflowEnum.SOURCETOEXIT+".txt")));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + fileSpliter + InfoflowEnum.SOURCETOEXIT + ".txt")));
             sourceToExitMap = generateMap(bufferedReader);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -160,6 +256,24 @@ public class InfoflowParser {
         return sourceToExitMap;
     }
 
+    /**
+     * 获取源点至沉淀点的方法映射
+     *
+     * @param is 输入流
+     * @return 映射
+     */
+    public Map<String, Set<String>> generateSourceSinkMap(InputStream is) {
+        Map<String, Set<String>> entryToSinkMap = new HashMap<>();
+        try (InputStreamReader reader = new InputStreamReader(is);
+             BufferedReader bufferedReader = new BufferedReader(reader)){
+            entryToSinkMap = generateMap(bufferedReader);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return entryToSinkMap;
+    }
 
     /**
      * 获取源点至沉淀点的方法映射
@@ -173,7 +287,7 @@ public class InfoflowParser {
         }
         Map<String, Set<String>> entryToSinkMap = new HashMap<>();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + Constants.fileSpliter + InfoflowEnum.SOURCETOSINK+".txt")));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(apkName + fileSpliter + InfoflowEnum.SOURCETOSINK + ".txt")));
             entryToSinkMap = generateMap(bufferedReader);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

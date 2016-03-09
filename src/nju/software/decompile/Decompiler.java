@@ -12,19 +12,22 @@ import java.io.InputStreamReader;
  */
 public class Decompiler {
 
+    public static void main(String[] args) {
+        decompile("InterAppCommunication/SendSMS.apk");
+    }
     /**
      * 调用执行apktool的bat文件将一个apk文件反编译成smali文件
      *
-     * @param filePath bat文件路径
+     * @param apkFile apk文件路径
      */
-    public static void decompile(String filePath) {
+    public static void decompile(String apkFile) {
+        String decomilePath = apkFile.substring(0, apkFile.length()-4);
         System.out.println("run decompiling...");
         Runtime rt = Runtime.getRuntime();
         Process process = null;
         try {
-            process = rt.exec("cmd.exe /c " + filePath);
+            process = rt.exec("cmd.exe /c apktool d -f "+apkFile+" -o "+decomilePath);
             process.waitFor();
-
             InputStream fis = process.getInputStream();
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
@@ -34,7 +37,7 @@ public class Decompiler {
             }
             System.out.println("finish decompiling...");
         } catch (IOException e) {
-            System.out.println("执行apkToSmali.bat文件出错！");
+            System.out.println("执行Decompiler decompile操作出错！");
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
