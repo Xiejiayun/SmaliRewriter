@@ -23,6 +23,10 @@ public class Main {
     public static void main(String[] args) {
 
         String apkFile = "InterAppCommunication/SendSMS.apk";
+        rewriteAPK(apkFile);
+    }
+
+    private static void rewriteAPK(String apkFile) {
         String apkDir = apkFile.substring(0, apkFile.length()-4);
         Decompiler.decompile(apkFile);
         //传输已经计算好的数据
