@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Xie on 2016/3/3.
+ * 资源文件重写器
+ *
+ * Created by Xie on 2016/3/10.
  */
-public class SmsRewriter extends AbstractRewriter {
+public class ResourceRewriter extends AbstractRewriter{
     @Override
     public void search(String smaliFile, String ruleFile, List<String> messageList) {
         File file = new File(smaliFile);
@@ -18,12 +20,10 @@ public class SmsRewriter extends AbstractRewriter {
             inputStream = new FileInputStream(file);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String lineText = null;
             // 记录行号，为之后要插入的位置提供标记
             int lineNumber = 0;
             // 记录第一行内容，从中提取出包名
             String firstLine = null;
-
             // 记录所有的需要修改的行filePath
             Map<Integer, Integer> insertMap = new HashMap<>();
             // 遍历文件的每一行，查找发送短信的相关代码
@@ -48,7 +48,8 @@ public class SmsRewriter extends AbstractRewriter {
         Object[] keys = insertMap.keySet().toArray();
         Arrays.sort(keys);
 
-        int index = 0;
+        //除去首行，然后在选中的那行下面插入相应的smali代码
+        int index = 2;
         for (int i = keys.length-1; i >= 0; i--) {
 
             int lineNumber = (Integer) keys[i];
@@ -59,19 +60,7 @@ public class SmsRewriter extends AbstractRewriter {
             String lineToBeInserted = null;
             switch (methodType) {
                 case 1:
-                    lineToBeInserted = "invoke-static {v1, v3, p0}, "
-                            + packageName
-                            + "CheckMessageRule;->checkSMSMessage(Ljava/lang/String;Ljava/lang/String;Landroid/app/Activity;)V";
-                    break;
-                case 2:
-                    lineToBeInserted = "invoke-static {v1, v4, p0}, "
-                            + packageName
-                            + "CheckMessageRule;->checkSMSMessage(Ljava/lang/String;Ljava/lang/String;Landroid/app/Activity;)V";
-                    break;
-                case 3:
-                    lineToBeInserted = "invoke-static {v1, v3, p0}, "
-                            + packageName
-                            + "CheckMessageRule;->checkSMSmessageWithList(Ljava/lang/String;Ljava/util/ArrayList;Landroid/app/Activity;)V";
+                    lineToBeInserted = packageName+"R$raw;,";
                     break;
                 default:
                     break;
@@ -94,12 +83,10 @@ public class SmsRewriter extends AbstractRewriter {
             for (String message : messageList) {
                 if (lineText.replace(" ", "").equals(message.replace(" ", ""))) {
                     int methodType;
-                    if (message.contains("sendTextMessage")) {
+                    if (message.contains("value = {")) {
                         methodType = 1;
-                    } else if (message.contains("sendDataMessage")) {
-                        methodType = 2;
                     } else {
-                        methodType = 3;
+                        methodType = 2;
                     }
                     insertMap.put(lineNumber, methodType);
                 }
@@ -107,4 +94,5 @@ public class SmsRewriter extends AbstractRewriter {
         }
         return insertMap;
     }
+
 }

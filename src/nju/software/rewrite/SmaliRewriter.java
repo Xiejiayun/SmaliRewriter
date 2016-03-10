@@ -1,8 +1,17 @@
 package nju.software.rewrite;
 
 import nju.software.constants.SmaliFileEnum;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,13 +27,15 @@ public class SmaliRewriter{
      * @param messageList
      * @throws Exception
      */
-    public void readSinkSmalis(String filePath, List<String> messageList) throws Exception {
+    public void readSinkSmalis(String filePath, List<String> messageList, int depth) throws Exception {
         File root = new File(filePath);
         File[] files = root.listFiles();
         for (File file : files) {
             if (file.isDirectory()) {
+                if (depth == 0 && file.getName().endsWith("android"))
+                    continue;
                 // 递归调用
-                readSinkSmalis(file.getAbsolutePath(), messageList);
+                readSinkSmalis(file.getAbsolutePath(), messageList, depth+1);
             } else {
                 // 对所有的smali文件调用searchSMS方法处理
                 //TODO 在这边我们可以针对想要调用的入口点方法，沉淀点方法进行查找
@@ -38,13 +49,15 @@ public class SmaliRewriter{
         }
     }
 
-    public void readEntrySmalis(String filePath, List<String> messageList) throws Exception {
+    public void readEntrySmalis(String filePath, List<String> messageList, int depth) throws Exception {
         File root = new File(filePath);
         File[] files = root.listFiles();
         for (File file : files) {
             if (file.isDirectory()) {
+                if (depth == 0 && file.getName().endsWith("android"))
+                    continue;
                 // 递归调用
-                readEntrySmalis(file.getAbsolutePath(), messageList);
+                readEntrySmalis(file.getAbsolutePath(), messageList, depth+1);
             } else {
                 // 对所有的smali文件调用searchSMS方法处理
                 //TODO 在这边我们可以针对想要调用的入口点方法，沉淀点方法进行查找
@@ -54,5 +67,49 @@ public class SmaliRewriter{
                 }
             }
         }
+    }
+
+    public void updateResourceSmalis(String filePath, int depth) {
+        File root = new File(filePath);
+        File[] files = root.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if (depth == 0 && file.getName().endsWith("android"))
+                    continue;
+                // 递归调用
+                updateResourceSmalis(file.getAbsolutePath(), depth+1);
+            } else {
+                // 对所有的smali文件调用searchSMS方法处理
+                if (file.getName().equals("R.smali")) {
+                    //添加相应的
+                    ResourceRewriter resourceRewriter = new ResourceRewriter();
+                    List<String> messageList = new ArrayList<>();
+                    messageList.add("value = {");
+                    resourceRewriter.search(file.getAbsolutePath(), SmaliFileEnum.RAW.getFileName(),messageList);
+                }
+            }
+        }
+    }
+
+    public void updateResourceXML(String filePath) {
+        File publicXmlFile = new File(filePath);
+        if (!publicXmlFile.exists())
+            return;
+
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(publicXmlFile);
+            Element element = doc.getDocumentElement();
+            System.out.println(element);
+            System.out.println();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -26,14 +26,14 @@ public abstract class AbstractRewriter {
      * methodType是要处理的发送短信的方式的类别 firstLine是文件的第一行内容，包含包名，等一下要从中提取出包名
      *
      * @param objectFile 目标文件
-     * @param copyFile   拷贝文件
+     * @param copyFiles   拷贝文件
      * @param insertMap  插入映射
      * @param firstLine  第一行数据
      * @throws Exception
      */
-    public void insertSmalis(File objectFile, File copyFile,
+    public void insertSmalis(File objectFile,
                              Map<Integer, Integer> insertMap,
-                             String firstLine) throws Exception {
+                             String firstLine, File... copyFiles) throws Exception {
         if (insertMap.size() == 0) {
             return;
         }
@@ -41,20 +41,20 @@ public abstract class AbstractRewriter {
 
         // System.out.println("lineNumber:" + lineNumber);
         File parentDir = objectFile.getParentFile();
-        // 将要添加的smali文件file2拷贝到相应的目录file下，名字同file2一样
-        File file3 = new File(parentDir.getAbsolutePath() + "/"
-                + copyFile.getName());
-
-        // System.out.println(parentDir.getAbsolutePath());
         // 提取包名
         String[] decodeTemp = firstLine.split(" ");
         String temp = decodeTemp[decodeTemp.length - 1];
         // System.out.println("temp: " + temp);
         String packageName = temp.substring(0, temp.lastIndexOf('/') + 1);
-        // System.out.println("packageName: " + packageName);
 
-        fileChannelCopy(copyFile, file3);
-        modifyFilterFile(packageName, file3);
+        for (File copyFile : copyFiles) {
+            // 将要添加的smali文件file2拷贝到相应的目录file下，名字同file2一样
+            File file3 = new File(parentDir.getAbsolutePath() + "/"
+                    + copyFile.getName());
+            fileChannelCopy(copyFile, file3);
+            modifyFilterFile(packageName, file3);
+        }
+
         // 根据实际的情况调用不同的插入方法，分别对发送短信和通过网络的方式插入相应的代码
         //具体实现延迟到子类
         try {

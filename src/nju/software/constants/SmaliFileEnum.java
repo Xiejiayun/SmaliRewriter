@@ -7,7 +7,8 @@ public enum SmaliFileEnum {
 
     SMS("CheckMessageRule.smali"),
     NETWORK("CheckNetworkRule.smali"),
-    ENTRY("CheckActivityRule.smali");
+    ENTRY("CheckActivityRule.smali"),
+    RAW("R$raw.smali");
 
 
     private String fileName;

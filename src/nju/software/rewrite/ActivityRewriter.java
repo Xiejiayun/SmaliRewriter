@@ -36,7 +36,7 @@ public class ActivityRewriter extends AbstractRewriter {
             inputStreamReader.close();
             inputStream.close();
             // 调用插入smali语句的方法
-            insertSmalis(file, new File(ruleFile), insertMap, firstLine);
+            insertSmalis(file, insertMap, firstLine, new File(ruleFile));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

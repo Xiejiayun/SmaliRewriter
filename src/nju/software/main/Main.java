@@ -1,11 +1,11 @@
 package nju.software.main;
 
-import nju.software.constants.Constants;
 import nju.software.decompile.Decompiler;
 import nju.software.repackage.SmaliRepackage;
 import nju.software.rewrite.SmaliRewriter;
 import nju.software.search.EntryPointSearch;
 import nju.software.search.SinkPointSearch;
+import nju.software.transformer.FileTransformer;
 
 import java.util.List;
 
@@ -22,27 +22,29 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        Decompiler.decompile(Constants.apkToSmali);
-        messageList = SinkPointSearch
-                .searchSmalis("SinkSetAPI.smali");
+        String apkFile = "InterAppCommunication/SendSMS.apk";
+        String apkDir = apkFile.substring(0, apkFile.length()-4);
+        Decompiler.decompile(apkFile);
+        //传输已经计算好的数据
+        FileTransformer.transform(apkFile);
         SmaliRewriter smaliRewriter = new SmaliRewriter();
-//        String apkFilePath = null;
-        try {
 
-//            String apkFileFolder = apkFilePath.endsWith(".apk") ?
-//                    apkFilePath.substring(0, apkFilePath.length() - 4) : apkFilePath;
+        try {
+            //更新资源文件，对计算好的资源文件更新数据库
+            smaliRewriter.updateResourceSmalis(apkDir+
+                    "/smali", 0);
+            smaliRewriter.updateResourceXML(apkDir+ "/res/values/public.xml");
             messageList = SinkPointSearch
                     .searchSmalis("SinkSetAPI.smali");
-            smaliRewriter.readSinkSmalis(
-                    "D://androidAPK//SendSMSAutoDapk//smali//org", messageList);
+            smaliRewriter.readSinkSmalis(apkDir+
+                    "/smali", messageList, 0);
             messageList = EntryPointSearch
                     .searchSmalis("EntrySetAPI.smali");
-            smaliRewriter.readEntrySmalis(
-                    "D://androidAPK//SendSMSAutoDapk//smali//org", messageList);
+            smaliRewriter.readEntrySmalis(apkDir+
+                    "/smali", messageList, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SmaliRepackage.repackage(Constants.smaliToApk);
+        SmaliRepackage.repackage(apkFile);
     }
-
 }
