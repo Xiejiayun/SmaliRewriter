@@ -47,12 +47,14 @@ public abstract class AbstractRewriter {
         // System.out.println("temp: " + temp);
         String packageName = temp.substring(0, temp.lastIndexOf('/') + 1);
 
-        for (File copyFile : copyFiles) {
-            // 将要添加的smali文件file2拷贝到相应的目录file下，名字同file2一样
-            File file3 = new File(parentDir.getAbsolutePath() + "/"
-                    + copyFile.getName());
-            fileChannelCopy(copyFile, file3);
-            modifyFilterFile(packageName, file3);
+        if (copyFiles != null) {
+            for (File copyFile : copyFiles) {
+                // 将要添加的smali文件file2拷贝到相应的目录file下，名字同file2一样
+                File file3 = new File(parentDir.getAbsolutePath() + "/"
+                        + copyFile.getName());
+                fileChannelCopy(copyFile, file3);
+                modifyFilterFile(packageName, file3);
+            }
         }
 
         // 根据实际的情况调用不同的插入方法，分别对发送短信和通过网络的方式插入相应的代码

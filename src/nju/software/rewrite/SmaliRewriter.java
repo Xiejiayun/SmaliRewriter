@@ -95,21 +95,10 @@ public class SmaliRewriter{
         File publicXmlFile = new File(filePath);
         if (!publicXmlFile.exists())
             return;
-
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(publicXmlFile);
-            Element element = doc.getDocumentElement();
-            System.out.println(element);
-            System.out.println();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<String> messageList = new ArrayList<>();
+        messageList.add("<resources>");
+        XmlRewriter xmlRewriter = new XmlRewriter();
+        xmlRewriter.search(publicXmlFile.getAbsolutePath(), null, messageList);
 
     }
 }
