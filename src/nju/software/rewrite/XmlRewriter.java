@@ -14,6 +14,7 @@ public class XmlRewriter extends AbstractRewriter {
     @Override
     public void search(String smaliFile, String ruleFile, List<String> messageList) {
 
+
     }
 
     @Override
