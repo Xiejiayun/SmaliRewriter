@@ -8,4 +8,12 @@ package nju.software.manager;
 public class CollusionAttackManager {
 
 
+    public boolean isCollusionAttack() {
+
+        return false;
+    }
+
+    public void back() {
+
+    }
 }

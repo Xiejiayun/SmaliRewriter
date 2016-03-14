@@ -7,4 +7,14 @@ package nju.software.manager;
  */
 public class InformationLeakageManager {
 
+
+    public boolean isInfomationLeakage() {
+
+        return false;
+    }
+
+    public void back() {
+
+    }
+
 }
