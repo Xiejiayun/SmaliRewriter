@@ -98,8 +98,10 @@ public class SmsRewriter extends AbstractRewriter {
                         methodType = 1;
                     } else if (message.contains("sendDataMessage")) {
                         methodType = 2;
-                    } else {
+                    } else if (message.contains("sendMultipartTextMessage")){
                         methodType = 3;
+                    } else {
+                        methodType = 4;
                     }
                     insertMap.put(lineNumber, methodType);
                 }

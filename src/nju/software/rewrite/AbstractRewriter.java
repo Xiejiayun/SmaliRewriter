@@ -142,7 +142,7 @@ public abstract class AbstractRewriter {
             }
             // 输出读取到的数据
             out.println(thisLine);
-            System.out.println(thisLine);
+//            System.out.println(thisLine);
             // 行号增加
             i++;
         }

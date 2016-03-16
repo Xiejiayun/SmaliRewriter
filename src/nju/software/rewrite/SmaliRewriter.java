@@ -44,6 +44,8 @@ public class SmaliRewriter{
                     smsRewriter.search(file.getAbsolutePath(), SmaliFileEnum.SMS.getFileName(), messageList);
                     ActivityRewriter activityRewriter = new ActivityRewriter();
                     activityRewriter.search(file.getAbsolutePath(), SmaliFileEnum.ENTRY.getFileName(), messageList);
+//                    LogRewriter logRewriter = new LogRewriter();
+//                    logRewriter.search(file.getAbsolutePath(), SmaliFileEnum.LOG.getFileName(), messageList);
                 }
             }
         }
@@ -68,6 +70,7 @@ public class SmaliRewriter{
             }
         }
     }
+
 
     public void updateResourceSmalis(String filePath, int depth) {
         File root = new File(filePath);

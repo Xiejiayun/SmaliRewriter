@@ -7,11 +7,11 @@
 //import java.util.Map;
 //
 ///**
-// * 对所有沉淀点进行查询，之后进行插入校验代码的过程
-// * <p/>
-// * Created by Xie on 2016/3/11.
+// * Created by Xie on 2016/3/15.
 // */
-//public class SinkRewriter extends AbstractRewriter {
+//public class LogRewriter extends AbstractRewriter {
+//    Map<Integer, String> paraMap = new HashMap<>();
+//
 //    @Override
 //    public void search(String smaliFile, String ruleFile, List<String> messageList) {
 //        try {
@@ -23,9 +23,10 @@
 //            // 记录行号，为之后要插入的位置提供标记
 //            int lineNumber = 0;
 //            // 记录第一行内容，从中提取出包名
-//            String firstLine = null;
+//            String firstLine = "";
 //            // 记录所有的需要修改的行filePath
 //            Map<Integer, Integer> insertMap = new HashMap<>();
+//
 //            // 遍历文件的每一行，查找发送短信的相关代码
 //            firstLine = generateFirstLine(bufferedReader);
 //            insertMap = generateInsertmap(messageList, bufferedReader, lineNumber, firstLine, insertMap);
@@ -57,29 +58,14 @@
 //            String lineToBeInserted = null;
 //            switch (methodType) {
 //                case 1:
-//                    lineToBeInserted = "";
+//                    lineToBeInserted = paraMap.get(1) + ", p0}, "
+//                            + packageName
+//                            + "CheckLogRule;->checkLog(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V";
 //                    break;
 //                case 2:
-//                    lineToBeInserted =
-//                            "";
-//                    break;
-//                case 3:
-//                    lineToBeInserted =
-//                            "";
-//                    break;
-//                case 4:
-//                    lineToBeInserted =
-//                            "";
-//                    break;
-//                case 5:
-//                    lineToBeInserted =
-//                            "invoke-static {v1, v3, p0}, "
-//                                    + packageName
-//                                    + "CheckMessageRule;->checkSMSMessage(Ljava/lang/String;Ljava/lang/String;Landroid/app/Activity;)V";
-//                    break;
-//                case 6:
-//                    lineToBeInserted =
-//                            "";
+//                    lineToBeInserted = paraMap.get(2) + ", p0}, "
+//                            + packageName
+//                            + "CheckLogRule;->checkLog(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V";
 //                    break;
 //                default:
 //                    break;
@@ -100,35 +86,31 @@
 //            lineNumber++;
 //            int methodType;
 //            for (String message : messageList) {
-//                if (lineText.replace(" ", "").equals(message.replace(" ", ""))) {
-//                    if (lineText.contains("Lorg/apache/http/client/HttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;")) {
-//                        insertMap.put(lineNumber + 1, 1);
-//                        break;
-//                    } else if (lineText.contains("Ljava/io/OutputStream;->write([B)V")) {
-//                        insertMap.put(lineNumber + 1, 2);
-//                        break;
-//                    } else if (lineText.contains("Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I")
-//                            || lineText.contains("Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
+//                if (lineText.replace(" ", "").contains("Landroid/util/Log;") && message.replace(" ", "").contains("Landroid/util/Log;")) {
+//                    if (lineText.contains("Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I")
 //                            || lineText.contains("Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I")
-//                            || lineText.contains("Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
 //                            || lineText.contains("Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I")
-//                            || lineText.contains("Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
 //                            || lineText.contains("Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I")
-//                            || lineText.contains("Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
 //                            || lineText.contains("Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I")
 //                            || lineText.contains("Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/Throwable;)I")
-//                            || lineText.contains("Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
 //                            || lineText.contains("Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;)I")
 //                            || lineText.contains("Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/Throwable;)I")
+//                            ) {
+//                        insertMap.put(lineNumber, 1);
+//                        paraMap.put(1, lineText.split("}, Landroid")[0]);
+//                        break;
+//                    } else if (lineText.contains("Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
+//                            || lineText.contains("Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
+//                            || lineText.contains("Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
+//                            || lineText.contains("Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
+//                            || lineText.contains("Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
 //                            || lineText.contains("Landroid/util/Log;->wtf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I")
 //                            ) {
-//                        insertMap.put(lineNumber, 3);
-//                    } else if (lineText.contains("Landroid/media/MediaRecorder;->setAudioSource(I)V")) {
-//                        insertMap.put(lineNumber, 4);
-//                    } else if (lineText.contains("Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V")) {
-//                        insertMap.put(lineNumber, 5);
+//                        insertMap.put(lineNumber, 2);
+//                        paraMap.put(2, lineText.split("}, Landroid")[0]);
+//                        break;
 //                    } else {
-//                        insertMap.put(lineNumber, 6);
+//                        insertMap.put(lineNumber, 3);
 //                    }
 //                }
 //            }
@@ -136,29 +118,4 @@
 //        return insertMap;
 //    }
 //
-//    private class Data{
-//        private int type;
-//        private String args;
-//
-//        public Data(int type, String args) {
-//            this.type = type;
-//            this.args = args;
-//        }
-//
-//        public int getType() {
-//            return type;
-//        }
-//
-//        public void setType(int type) {
-//            this.type = type;
-//        }
-//
-//        public String getArgs() {
-//            return args;
-//        }
-//
-//        public void setArgs(String args) {
-//            this.args = args;
-//        }
-//    }
 //}

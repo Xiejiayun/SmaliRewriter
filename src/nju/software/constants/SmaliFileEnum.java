@@ -8,6 +8,7 @@ public enum SmaliFileEnum {
     SMS("CheckMessageRule.smali"),
     NETWORK("CheckNetworkRule.smali"),
     ENTRY("CheckActivityRule.smali"),
+    LOG("CheckLogRule.smali"),
     RAW("R$raw.smali");
 
 

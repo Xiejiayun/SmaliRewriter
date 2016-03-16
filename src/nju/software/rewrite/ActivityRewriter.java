@@ -51,32 +51,33 @@ public class ActivityRewriter extends AbstractRewriter {
         Arrays.sort(keys);
 
         int index = 0;
-        for (int i = keys.length-1; i >= 0; i--) {
+        for (int i = keys.length - 1; i >= 0; i--) {
             int lineNumber = (Integer) keys[i];
-            System.out.println("行号" + lineNumber);
-            int methodType = insertMap.get(lineNumber);
 
+            int methodType = insertMap.get(lineNumber);
+            System.out.println("ActivityRewriter 行号 " + lineNumber + " 类型 " + methodType);
             // 要插入的代码内容
             String lineToBeInserted = null;
             switch (methodType) {
                 case 1:
-                    lineToBeInserted = "invoke-static {p1, p2, p3, p0}, " + packageName + "CheckActivityRule;->isPermissionRedelegation(IILandroid/content/Intent;Landroid/app/Activity;)Z\n" +
-                            "move-result v0\n" +
-                            ".local v0, \"isPermissionRedelegation\":Z\n" +
-                            "if-eqz v0, :cond_1\n" +
-                            "invoke-static {p0}," + packageName + "CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
-                            "return-void\n";
+                    lineToBeInserted = "\tinvoke-static {p1, p2, p3, p0}, " + packageName + "CheckActivityRule;->isPermissionRedelegation(IILandroid/content/Intent;Landroid/app/Activity;)Z\n" +
+                            "\tmove-result v0\n" +
+                            "\t.local v0, \"isPermissionRedelegation\":Z\n" +
+                            "\tif-eqz v0, :cond_10000\n" +
+                            "\tinvoke-static {p0}," + packageName + "CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
+                            "\treturn-void\n"+
+                            "\t:cond_10000\n";
                     break;
                 case 2:
                     lineToBeInserted =
-                    " \tinvoke-static {p0},"  + packageName + "CheckActivityRule;->isPermissionRedelegation(Landroid/app/Activity;)Z\n" +
-                            "\tmove-result v1\n" +
-                            "\t.local v1, \"isPermissionRedelegation\":Z\n" +
-                            "\tif-eqz v1, :cond_0\n" +
-                            "\tinvoke-static {p0},"+ packageName +"CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
-                            "\t:goto_0\n" +
-                            "\treturn-void\n" +
-                            "\t:cond_0";
+                            " \tinvoke-static {p0}," + packageName + "CheckActivityRule;->isPermissionRedelegation(Landroid/app/Activity;)Z\n" +
+                                    "\tmove-result v1\n" +
+                                    "\t.local v1, \"isPermissionRedelegation\":Z\n" +
+                                    "\tif-eqz v1, :cond_10001\n" +
+                                    "\tinvoke-static {p0}," + packageName + "CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
+                                    "\t:goto_0\n" +
+                                    "\treturn-void\n" +
+                                    "\t:cond_10001";
                     break;
                 default:
                     break;

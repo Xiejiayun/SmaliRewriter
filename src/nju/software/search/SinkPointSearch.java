@@ -24,10 +24,7 @@ public class SinkPointSearch {
 			String lineText = null;
 			// 遍历文件的每一行，查找发送短信的相关代码
 			while ((lineText = bufferedReader.readLine()) != null) {
-				if (lineText.contains("invoke-virtual")) {
-//					System.out.println("text:  " + lineText.replace(" ", ""));
 					messageList.add(lineText);
-				}
 			}
 			bufferedReader.close();
 			inputStreamReader.close();

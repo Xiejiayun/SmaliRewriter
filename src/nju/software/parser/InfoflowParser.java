@@ -60,6 +60,12 @@ public class InfoflowParser {
         System.out.println(map);
     }
 
+    public static Map<String, Set<String>> generateSinkPointDescription(InputStream is) {
+        Map<String, Set<String>> result = new HashMap<>();
+
+        return result;
+    }
+
     /**
      * 获取入口点权限的方法映射
      *
