@@ -44,8 +44,8 @@ public class SmaliRewriter{
                     smsRewriter.search(file.getAbsolutePath(), SmaliFileEnum.SMS.getFileName(), messageList);
                     ActivityRewriter activityRewriter = new ActivityRewriter();
                     activityRewriter.search(file.getAbsolutePath(), SmaliFileEnum.ENTRY.getFileName(), messageList);
-//                    LogRewriter logRewriter = new LogRewriter();
-//                    logRewriter.search(file.getAbsolutePath(), SmaliFileEnum.LOG.getFileName(), messageList);
+                    LogRewriter logRewriter = new LogRewriter();
+                    logRewriter.search(file.getAbsolutePath(), SmaliFileEnum.LOG.getFileName(), messageList);
                 }
             }
         }
