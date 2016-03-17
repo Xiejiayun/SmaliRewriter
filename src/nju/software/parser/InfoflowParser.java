@@ -1,10 +1,7 @@
 package nju.software.parser;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 提取生成的有用的信息流信息
@@ -25,16 +22,33 @@ public class InfoflowParser {
     }
 
     public static void main(String[] args) {
-        Map map = InfoflowParser.v().generateEntryPointPermissionMap("InterAppCommunication/SendSMS.apk");
-        Map map1 = InfoflowParser.v().generateEntryExitMap("InterAppCommunication/SendSMS.apk");
-        Map map2 = InfoflowParser.v().generateEntrySinkMap("InterAppCommunication/SendSMS.apk");
-        Map map3 = InfoflowParser.v().generateSourceExitMap("InterAppCommunication/SendSMS.apk");
-        Map map4 = InfoflowParser.v().generateSourceSinkMap("InterAppCommunication/SendSMS.apk");
-        System.out.println(map);
-        System.out.println(map1);
-        System.out.println(map2);
-        System.out.println(map3);
-        System.out.println(map4);
+//        Map map = InfoflowParser.v().generateEntryPointPermissionMap("InterAppCommunication/SendSMS.apk");
+//        Map map1 = InfoflowParser.v().generateEntryExitMap("InterAppCommunication/SendSMS.apk");
+//        Map map2 = InfoflowParser.v().generateEntrySinkMap("InterAppCommunication/SendSMS.apk");
+//        Map map3 = InfoflowParser.v().generateSourceExitMap("InterAppCommunication/SendSMS.apk");
+//        Map map4 = InfoflowParser.v().generateSourceSinkMap("InterAppCommunication/SendSMS.apk");
+//        System.out.println(map);
+//        System.out.println(map1);
+//        System.out.println(map2);
+//        System.out.println(map3);
+//        System.out.println(map4);
+        try {
+            BufferedReader is = new BufferedReader(new FileReader(new File("InterAppCommunication/SendSMSdata/sourcetosink.txt")));
+            Map<String, Set<String>> map5 = InfoflowParser.v().generatePathMap(is);
+            for (String sink : map5.keySet()) {
+                Set<String> paths = map5.get(sink);
+                for (String path : paths) {
+                    String[] vertexs = path.split("\\),");
+                    for (String vertex : vertexs)
+                        System.out.println(vertex);
+                }
+            }
+            System.out.println(map5);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Map<String, Set<String>> generateSinkPointDescription(InputStream is) {
