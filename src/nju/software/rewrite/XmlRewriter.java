@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 对public.xml进行相应的操作来添加相应的资源文件
- *
+ * <p/>
  * Created by Xie on 2016/3/10.
  */
 public class XmlRewriter extends AbstractRewriter {
@@ -18,7 +18,7 @@ public class XmlRewriter extends AbstractRewriter {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String line = null;
-            while((line = bufferedReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 System.out.println(line);
             }
         } catch (FileNotFoundException e) {
@@ -61,7 +61,7 @@ public class XmlRewriter extends AbstractRewriter {
         Arrays.sort(keys);
         //除去首行，然后在选中的那行下面插入相应的smali代码
         int index = 2;
-        for (int i = keys.length-1; i >= 0; i--) {
+        for (int i = keys.length - 1; i >= 0; i--) {
 
             int lineNumber = (Integer) keys[i];
             System.out.println("行号" + lineNumber);

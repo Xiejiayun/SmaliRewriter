@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 用来搜寻入口点的smali代码
+ * <p/>
  * Created by Xie on 2016/2/3.
  */
 public class EntryPointSearch {

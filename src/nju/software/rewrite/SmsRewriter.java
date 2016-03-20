@@ -49,7 +49,7 @@ public class SmsRewriter extends AbstractRewriter {
         Arrays.sort(keys);
 
         int index = 0;
-        for (int i = keys.length-1; i >= 0; i--) {
+        for (int i = keys.length - 1; i >= 0; i--) {
 
             int lineNumber = (Integer) keys[i];
             System.out.println("行号" + lineNumber);
@@ -98,7 +98,7 @@ public class SmsRewriter extends AbstractRewriter {
                         methodType = 1;
                     } else if (message.contains("sendDataMessage")) {
                         methodType = 2;
-                    } else if (message.contains("sendMultipartTextMessage")){
+                    } else if (message.contains("sendMultipartTextMessage")) {
                         methodType = 3;
                     } else {
                         methodType = 4;

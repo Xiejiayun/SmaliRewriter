@@ -14,15 +14,15 @@ public class SmaliRepackage {
      * 调用执行apktool的bat文件将已经插入了smali代码的smali文件重新打包生成apk文件
      */
     public static void repackage(String apkFile) {
-        String repackagePath = apkFile.substring(0, apkFile.length()-4);
+        String repackagePath = apkFile.substring(0, apkFile.length() - 4);
         System.out.println("run repackaging ..");
         String[] paths = apkFile.split("/");
-        String apkName = paths[paths.length-1];
+        String apkName = paths[paths.length - 1];
         Runtime rt = Runtime.getRuntime();
         Process process = null;
         try {
             System.out.println("start building ..");
-            process = rt.exec("cmd.exe /c apktool b "+repackagePath+" -o "+repackagePath+"/New"+apkName);
+            process = rt.exec("cmd.exe /c apktool b " + repackagePath + " -o " + repackagePath + "/New" + apkName);
             process.waitFor();
             InputStream fis = process.getInputStream();
             InputStreamReader isr = new InputStreamReader(fis);
@@ -32,7 +32,7 @@ public class SmaliRepackage {
                 System.out.println(line);
             }
             System.out.println("finish building ..");
-            FileTransformer.transform(new File("debug.keystore"), new File(repackagePath+"/debug.keystore"));
+            FileTransformer.transform(new File("debug.keystore"), new File(repackagePath + "/debug.keystore"));
 //            System.out.println("start jarsigner ..");
 //            process = rt.exec("cmd.exe /c jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore debug.keystore "+repackagePath+"/New"+apkName+" android\n");
 //            process.waitFor();

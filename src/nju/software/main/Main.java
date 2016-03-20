@@ -27,7 +27,7 @@ public class Main {
     }
 
     private static void rewriteAPK(String apkFile) {
-        String apkDir = apkFile.substring(0, apkFile.length()-4);
+        String apkDir = apkFile.substring(0, apkFile.length() - 4);
         Decompiler.decompile(apkFile);
         //传输已经计算好的数据
         FileTransformer.transform(apkFile);
@@ -35,16 +35,16 @@ public class Main {
 
         try {
             //更新资源文件，对计算好的资源文件更新数据库
-            smaliRewriter.updateResourceSmalis(apkDir+
+            smaliRewriter.updateResourceSmalis(apkDir +
                     "/smali", 0);
-            smaliRewriter.updateResourceXML(apkDir+ "/res/values/public.xml");
+            smaliRewriter.updateResourceXML(apkDir + "/res/values/public.xml");
             messageList = SinkPointSearch
                     .searchSmalis("SinkSetAPI.smali");
-            smaliRewriter.readSinkSmalis(apkDir+
+            smaliRewriter.readSinkSmalis(apkDir +
                     "/smali", messageList, 0);
             messageList = EntryPointSearch
                     .searchSmalis("EntrySetAPI.smali");
-            smaliRewriter.readEntrySmalis(apkDir+
+            smaliRewriter.readEntrySmalis(apkDir +
                     "/smali", messageList, 0);
         } catch (Exception e) {
             e.printStackTrace();

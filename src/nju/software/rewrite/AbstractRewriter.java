@@ -26,7 +26,7 @@ public abstract class AbstractRewriter {
      * methodType是要处理的发送短信的方式的类别 firstLine是文件的第一行内容，包含包名，等一下要从中提取出包名
      *
      * @param objectFile 目标文件
-     * @param copyFiles   拷贝文件
+     * @param copyFiles  拷贝文件
      * @param insertMap  插入映射
      * @param firstLine  第一行数据
      * @throws Exception

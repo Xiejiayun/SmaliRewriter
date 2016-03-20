@@ -1,7 +1,10 @@
 package nju.software.parser;
 
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 提取生成的有用的信息流信息
@@ -40,7 +43,7 @@ public class InfoflowParser {
                 for (String path : paths) {
                     String[] vertexs = path.split("\\),");
                     for (String vertex : vertexs)
-                        System.out.println(vertex);
+                        System.out.println(vertex + ")");
                 }
             }
             System.out.println(map5);
@@ -55,6 +58,39 @@ public class InfoflowParser {
         Map<String, Set<String>> result = new HashMap<>();
 
         return result;
+    }
+
+    /**
+     * 获取入口点权限的方法映射(已经在checkActivityRule中使用了)
+     *
+     * @param is 输入流
+     * @return 映射
+     */
+    public static Map<String, Set<String>> generateEntryPointPermissionMap(InputStream is) {
+        Map<String, Set<String>> sourceToExitMap = new HashMap<String, Set<String>>();
+        try {
+            InputStreamReader reader = new InputStreamReader(is);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                //表明这是一个入口点方法
+                if (line.startsWith("<")) {
+                    String method = line;
+                    Set<String> permissions = new HashSet<String>();
+                    line = bufferedReader.readLine();
+                    while (line != null && !line.startsWith("<")) {
+                        permissions.add(line);
+                        line = bufferedReader.readLine();
+                    }
+                    sourceToExitMap.put(method, permissions);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sourceToExitMap;
     }
 
     /**
@@ -92,39 +128,6 @@ public class InfoflowParser {
         }
         return sourceToExitMap;
     }
-
-    /**
-     * 获取入口点权限的方法映射(已经在checkActivityRule中使用了)
-     *
-     * @param is 输入流
-     * @return 映射
-     */
-//    public static Map<String, Set<String>> generateEntryPointPermissionMap(InputStream is) {
-//        Map<String, Set<String>> sourceToExitMap = new HashMap<String, Set<String>>();
-//        try {
-//            InputStreamReader reader = new InputStreamReader(is);
-//            BufferedReader bufferedReader = new BufferedReader(reader);
-//            String line = bufferedReader.readLine();
-//            while (line != null) {
-//                //表明这是一个入口点方法
-//                if (line.startsWith("<")) {
-//                    String method = line;
-//                    Set<String> permissions = new HashSet<String>();
-//                    line = bufferedReader.readLine();
-//                    while (line != null && !line.startsWith("<")) {
-//                        permissions.add(line);
-//                        line = bufferedReader.readLine();
-//                    }
-//                    sourceToExitMap.put(method, permissions);
-//                }
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return sourceToExitMap;
-//    }
 
     /**
      * 获取入口点到出口点的方法映射

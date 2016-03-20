@@ -8,10 +8,10 @@ import java.util.Map;
 
 /**
  * 资源文件重写器
- *
+ * <p/>
  * Created by Xie on 2016/3/10.
  */
-public class ResourceRewriter extends AbstractRewriter{
+public class ResourceRewriter extends AbstractRewriter {
     @Override
     public void search(String smaliFile, String ruleFile, List<String> messageList) {
         File file = new File(smaliFile);
@@ -50,7 +50,7 @@ public class ResourceRewriter extends AbstractRewriter{
 
         //除去首行，然后在选中的那行下面插入相应的smali代码
         int index = 2;
-        for (int i = keys.length-1; i >= 0; i--) {
+        for (int i = keys.length - 1; i >= 0; i--) {
 
             int lineNumber = (Integer) keys[i];
             System.out.println("行号" + lineNumber);
@@ -60,7 +60,7 @@ public class ResourceRewriter extends AbstractRewriter{
             String lineToBeInserted = null;
             switch (methodType) {
                 case 1:
-                    lineToBeInserted = packageName+"R$raw;,";
+                    lineToBeInserted = packageName + "R$raw;,";
                     break;
                 default:
                     break;

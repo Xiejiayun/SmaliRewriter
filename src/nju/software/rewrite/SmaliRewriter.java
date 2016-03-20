@@ -1,16 +1,8 @@
 package nju.software.rewrite;
 
 import nju.software.constants.SmaliFileEnum;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +10,7 @@ import java.util.List;
  * 用于将具体的规则插入到目标代码中 流程如下：（1）搜索目标代码，查找指定入口点和出口点 （2）在搜索到的点插入相应的规则 Created by Xie
  * on 2016/2/3.
  */
-public class SmaliRewriter{
+public class SmaliRewriter {
 
     /**
      * 遍历项目，同归递归，查找所有的后缀为smali的文件
@@ -35,7 +27,7 @@ public class SmaliRewriter{
                 if (depth == 0 && file.getName().endsWith("android"))
                     continue;
                 // 递归调用
-                readSinkSmalis(file.getAbsolutePath(), messageList, depth+1);
+                readSinkSmalis(file.getAbsolutePath(), messageList, depth + 1);
             } else {
                 // 对所有的smali文件调用searchSMS方法处理
                 //TODO 在这边我们可以针对想要调用的入口点方法，沉淀点方法进行查找
@@ -59,7 +51,7 @@ public class SmaliRewriter{
                 if (depth == 0 && file.getName().endsWith("android"))
                     continue;
                 // 递归调用
-                readEntrySmalis(file.getAbsolutePath(), messageList, depth+1);
+                readEntrySmalis(file.getAbsolutePath(), messageList, depth + 1);
             } else {
                 // 对所有的smali文件调用searchSMS方法处理
                 //TODO 在这边我们可以针对想要调用的入口点方法，沉淀点方法进行查找
@@ -80,7 +72,7 @@ public class SmaliRewriter{
                 if (depth == 0 && file.getName().endsWith("android"))
                     continue;
                 // 递归调用
-                updateResourceSmalis(file.getAbsolutePath(), depth+1);
+                updateResourceSmalis(file.getAbsolutePath(), depth + 1);
             } else {
                 // 对所有的smali文件调用searchSMS方法处理
                 if (file.getName().equals("R.smali")) {
@@ -88,7 +80,7 @@ public class SmaliRewriter{
                     ResourceRewriter resourceRewriter = new ResourceRewriter();
                     List<String> messageList = new ArrayList<>();
                     messageList.add("value = {");
-                    resourceRewriter.search(file.getAbsolutePath(), SmaliFileEnum.RAW.getFileName(),messageList);
+                    resourceRewriter.search(file.getAbsolutePath(), SmaliFileEnum.RAW.getFileName(), messageList);
                 }
             }
         }

@@ -5,7 +5,7 @@ import java.nio.channels.FileChannel;
 
 /**
  * 文件转换器，主要负责将生成的资源文件自动传入反编译的apk目录下
- *
+ * <p/>
  * Created by Xie on 2016/3/9.
  */
 public class FileTransformer {
@@ -26,7 +26,7 @@ public class FileTransformer {
         for (File source : files) {
             String sourcePath = source.getPath();
             String[] paths = sourcePath.split("\\\\");
-            File dest = new File(destDirectory +"\\"+ paths[paths.length - 1]);
+            File dest = new File(destDirectory + "\\" + paths[paths.length - 1]);
             if (!dest.exists())
                 try {
                     dest.createNewFile();

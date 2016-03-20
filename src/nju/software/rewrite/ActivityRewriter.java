@@ -65,7 +65,7 @@ public class ActivityRewriter extends AbstractRewriter {
                             "\t.local v0, \"isPermissionRedelegation\":Z\n" +
                             "\tif-eqz v0, :cond_10000\n" +
                             "\tinvoke-static {p0}," + packageName + "CheckActivityRule;->back(Landroid/app/Activity;)V\n" +
-                            "\treturn-void\n"+
+                            "\treturn-void\n" +
                             "\t:cond_10000\n";
                     break;
                 case 2:
