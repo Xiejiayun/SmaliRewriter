@@ -122,6 +122,4 @@ public class SinkParser {
         sinkInfo.setLineNumber(lineNumber);
         return sinkInfo;
     }
-
-
 }
