@@ -1,6 +1,7 @@
 package nju.software.rewrite;
 
 import nju.software.constants.SmaliFileEnum;
+import nju.software.parser.SinkParser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,6 +13,10 @@ import java.util.List;
  */
 public class SmaliRewriter {
 
+    public static void main(String[] args) {
+
+    }
+
     /**
      * 遍历项目，同归递归，查找所有的后缀为smali的文件
      *
@@ -20,6 +25,7 @@ public class SmaliRewriter {
      * @throws Exception
      */
     public void readSinkSmalis(String filePath, List<String> messageList, int depth) throws Exception {
+
         File root = new File(filePath);
         File[] files = root.listFiles();
         for (File file : files) {
@@ -40,6 +46,16 @@ public class SmaliRewriter {
                     logRewriter.search(file.getAbsolutePath(), SmaliFileEnum.LOG.getFileName(), messageList);
                 }
             }
+        }
+    }
+
+    public void readPreciseSinkSmalis(SinkParser.SinkInfo sinkInfo) {
+        String clazz = sinkInfo.getClazz();
+        String method = sinkInfo.getMethod();
+        int line = sinkInfo.getLineNumber();
+        String filePath = clazz.replaceAll(".", "/").concat(".smali");
+        if (method.contains("Log")) {
+
         }
     }
 

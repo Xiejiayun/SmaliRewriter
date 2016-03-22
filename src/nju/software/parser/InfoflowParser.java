@@ -25,21 +25,13 @@ public class InfoflowParser {
     }
 
     public static void main(String[] args) {
-//        Map map = InfoflowParser.v().generateEntryPointPermissionMap("InterAppCommunication/SendSMS.apk");
-//        Map map1 = InfoflowParser.v().generateEntryExitMap("InterAppCommunication/SendSMS.apk");
-//        Map map2 = InfoflowParser.v().generateEntrySinkMap("InterAppCommunication/SendSMS.apk");
-//        Map map3 = InfoflowParser.v().generateSourceExitMap("InterAppCommunication/SendSMS.apk");
-//        Map map4 = InfoflowParser.v().generateSourceSinkMap("InterAppCommunication/SendSMS.apk");
-//        System.out.println(map);
-//        System.out.println(map1);
-//        System.out.println(map2);
-//        System.out.println(map3);
-//        System.out.println(map4);
         try {
             BufferedReader is = new BufferedReader(new FileReader(new File("InterAppCommunication/SendSMSdata/sourcetosink.txt")));
-            Map<String, Set<String>> map5 = InfoflowParser.v().generatePathMap(is);
+            Map<String, Set<String>> map5 = InfoflowParser.v().generateSinkSourceMap(is);
             for (String sink : map5.keySet()) {
                 Set<String> paths = map5.get(sink);
+                System.out.println(sink);
+                SinkParser.v().generateSinkInfo(sink);
                 for (String path : paths) {
                     String[] vertexs = path.split("\\),");
                     for (String vertex : vertexs)
@@ -327,6 +319,37 @@ public class InfoflowParser {
     }
 
     /**
+     * 生成<沉淀点-源头>映射Map
+     *
+     * @param bufferedReader
+     * @return
+     * @throws IOException
+     */
+    private Map<String, Set<String>> generateSinkSourceMap(BufferedReader bufferedReader) throws IOException {
+        Map<String, Set<String>> map = new HashMap<>();
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            if (line.startsWith("Sink")) {
+                String source = "", path = "";
+                String sink = bufferedReader.readLine();
+                Set<String> sources = new HashSet<>();
+                line = bufferedReader.readLine();
+                while (line != null && !line.startsWith("Sink")) {
+                    if (line.startsWith("Source"))
+                        source = bufferedReader.readLine();
+                    line = bufferedReader.readLine();
+                    if (line.startsWith("Path"))
+                        bufferedReader.readLine();
+                    sources.add(source);
+                    line = bufferedReader.readLine();
+                }
+                map.put(sink, sources);
+            }
+        }
+        return map;
+    }
+
+    /**
      * 生成<沉淀点-路径>映射Map
      *
      * @param bufferedReader
@@ -356,6 +379,7 @@ public class InfoflowParser {
         }
         return map;
     }
+
 
     //信息流Enum，列举出具体的信息流方法
     public enum InfoflowEnum {
@@ -398,4 +422,6 @@ public class InfoflowParser {
             this.path = path;
         }
     }
+
+
 }
