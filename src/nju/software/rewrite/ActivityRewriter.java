@@ -50,7 +50,7 @@ public class ActivityRewriter extends AbstractRewriter {
         Object[] keys = insertMap.keySet().toArray();
         Arrays.sort(keys);
 
-        int index = 0;
+//        int index = 0;
         for (int i = keys.length - 1; i >= 0; i--) {
             int lineNumber = (Integer) keys[i];
 
@@ -84,12 +84,12 @@ public class ActivityRewriter extends AbstractRewriter {
             }
 
             try {
-                insertStringInFile(objectFile, (lineNumber + index),
+                insertStringInFile(objectFile, (lineNumber/* + index*/),
                         lineToBeInserted);
             } catch (Exception e) {
                 System.out.println("插入smali代码时出错！");
             }
-            index++;
+//            index++;
         }
     }
 

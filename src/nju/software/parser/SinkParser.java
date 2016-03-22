@@ -1,5 +1,7 @@
 package nju.software.parser;
 
+import nju.software.parser.model.SinkInfo;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,18 +24,18 @@ public class SinkParser {
     }
 
     public static void main(String[] args) {
-        Map map = genereateMapInfo();
+        Map map = genereateMapInfo("");
         System.out.println(map);
     }
 
-    private static Map<String, Set<SinkInfo>> genereateMapInfo() {
+    public static Map<String, Set<SinkInfo>> genereateMapInfo(String filePath) {
         Map<String, Set<SinkInfo>> map = new HashMap<>();
         //Source To Sink BufferedReader
         BufferedReader ss = null;
         BufferedReader es = null;
         try {
-            ss = new BufferedReader(new FileReader(new File("InterAppCommunication/SendSMSdata/sourcetosink.txt")));
-            es = new BufferedReader(new FileReader(new File("InterAppCommunication/SendSMSdata/entrytosink.txt")));
+            ss = new BufferedReader(new FileReader(new File(filePath+"data/sourcetosink.txt")));
+            es = new BufferedReader(new FileReader(new File(filePath+"data/entrytosink.txt")));
             Set<String> ssSink = SinkParser.v().generateSinkSet(ss);
             Set<String> esSink = SinkParser.v().generateSinkSet(es);
             generateMapInfo(map, ssSink);
@@ -121,67 +123,5 @@ public class SinkParser {
         return sinkInfo;
     }
 
-    public static class SinkInfo {
-        //沉淀点所在的类
-        private String clazz;
-        //沉淀点所在的方法
-        private String method;
-        //沉淀点位于Java文件中的行数
-        private int lineNumber;
 
-        public String getClazz() {
-            return clazz;
-        }
-
-        public void setClazz(String clazz) {
-            this.clazz = clazz;
-        }
-
-        public String getMethod() {
-            return method;
-        }
-
-        public void setMethod(String method) {
-            this.method = method;
-        }
-
-        public int getLineNumber() {
-            return lineNumber;
-        }
-
-        public void setLineNumber(int lineNumber) {
-            this.lineNumber = lineNumber;
-        }
-
-        @Override
-        public String toString() {
-            return "SinkInfo{" +
-                    "clazz='" + clazz + '\'' +
-                    ", method='" + method + '\'' +
-                    ", lineNumber=" + lineNumber +
-                    '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof SinkInfo)) return false;
-
-            SinkInfo sinkInfo = (SinkInfo) o;
-
-            if (getLineNumber() != sinkInfo.getLineNumber()) return false;
-            if (getClazz() != null ? !getClazz().equals(sinkInfo.getClazz()) : sinkInfo.getClazz() != null)
-                return false;
-            return getMethod() != null ? getMethod().equals(sinkInfo.getMethod()) : sinkInfo.getMethod() == null;
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = getClazz() != null ? getClazz().hashCode() : 0;
-            result = 31 * result + (getMethod() != null ? getMethod().hashCode() : 0);
-            result = 31 * result + getLineNumber();
-            return result;
-        }
-    }
 }

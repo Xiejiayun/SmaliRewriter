@@ -22,7 +22,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        String apkFile = "InterAppCommunication/SendSMS.apk";
+        String apkFile = "InterAppCommunication/Echoer.apk";
         rewriteAPK(apkFile);
     }
 
@@ -38,10 +38,11 @@ public class Main {
             smaliRewriter.updateResourceSmalis(apkDir +
                     "/smali", 0);
             smaliRewriter.updateResourceXML(apkDir + "/res/values/public.xml");
-            messageList = SinkPointSearch
-                    .searchSmalis("SinkSetAPI.smali");
-            smaliRewriter.readSinkSmalis(apkDir +
-                    "/smali", messageList, 0);
+//            messageList = SinkPointSearch
+//                    .searchSmalis("SinkSetAPI.smali");
+//            smaliRewriter.readSinkSmalis(apkDir +
+//                    "/smali", messageList, 0);
+            smaliRewriter.readPreciseSinkSmalis(apkDir);
             messageList = EntryPointSearch
                     .searchSmalis("EntrySetAPI.smali");
             smaliRewriter.readEntrySmalis(apkDir +

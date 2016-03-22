@@ -2,10 +2,10 @@ package nju.software.rewrite;
 
 import nju.software.constants.SmaliFileEnum;
 import nju.software.parser.SinkParser;
+import nju.software.parser.model.SinkInfo;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 用于将具体的规则插入到目标代码中 流程如下：（1）搜索目标代码，查找指定入口点和出口点 （2）在搜索到的点插入相应的规则 Created by Xie
@@ -49,13 +49,35 @@ public class SmaliRewriter {
         }
     }
 
-    public void readPreciseSinkSmalis(SinkParser.SinkInfo sinkInfo) {
-        String clazz = sinkInfo.getClazz();
-        String method = sinkInfo.getMethod();
-        int line = sinkInfo.getLineNumber();
-        String filePath = clazz.replaceAll(".", "/").concat(".smali");
-        if (method.contains("Log")) {
-
+    /**
+     * 读取精确的沉淀点的Smali并进行处理
+     */
+    public void readPreciseSinkSmalis(String filePath) {
+        Map<String,Set<SinkInfo>> map = SinkParser.genereateMapInfo(filePath);
+        //针对每个clazz做处理，由于一个clazz代表一个类，也就是一个smali文件，所以需要把所有的聚集到一起处理
+        for (String clazz : map.keySet()) {
+            Set<SinkInfo> sinkInfos = map.get(clazz);
+            filePath += "/smali/" + clazz.replaceAll("\\.","\\\\").concat(".smali");
+            Set<SinkInfo> logInfos = new HashSet<>();
+            Set<SinkInfo> smsInfos = new HashSet<>();
+            Set<SinkInfo> netInfos = new HashSet<>();
+            for (SinkInfo sinkInfo : sinkInfos) {
+                if (sinkInfo.getMethod().contains("Log")) {
+                    logInfos.add(sinkInfo);
+                } else if (sinkInfo.getMethod().contains("Message")) {
+                    smsInfos.add(sinkInfo);
+                } else if (sinkInfo.getMethod().contains("net") || sinkInfo.getMethod().contains("http")) {
+                    netInfos.add(sinkInfo);
+                }
+            }
+            if (logInfos.size() !=  0) {
+                LogRewriter logRewriter = new LogRewriter();
+                logRewriter.search(filePath, SmaliFileEnum.LOG.getFileName(), logInfos);
+            }
+            if (smsInfos.size() != 0) {
+                SmsRewriter smsRewriter = new SmsRewriter();
+//                smsRewriter
+            }
         }
     }
 
