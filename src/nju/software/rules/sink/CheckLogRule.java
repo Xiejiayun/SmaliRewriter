@@ -8,7 +8,7 @@ import android.util.Log;
 public class CheckLogRule {
 
     public static void checkLog(String description, String message) {
-        String sms = "正在尝试写入日志 描述"+description+" 信息"+message;
+        String sms = "写入日志 描述:"+description+" 信息:"+message;
         Log.w("日志警告", sms);
     }
 }
